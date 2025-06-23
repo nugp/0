@@ -321,3 +321,58 @@ class EnergyManager:
         
         plt.tight_layout()
         plt.show()
+
+    def plot_cost_analysis(self, days=30):
+        """Анализ стоимости энергопотребления"""
+        end_date = datetime.now()
+        start_date = end_date - timedelta(days=days)
+        
+        # Фильтрация данных
+        period_data = [d for d in self.energy_data 
+                      if start_date <= datetime.fromisoformat(d["timestamp"]) <= end_date]
+        
+        if not period_data:
+            print("Нет данных для визуализации")
+            return
+        
+        # Создаем DataFrame
+        df = pd.DataFrame(period_data)
+        df['timestamp'] = pd.to_datetime(df['timestamp'])
+        df['hour'] = df['timestamp'].dt.hour
+        df['tariff'] = df['hour'].apply(lambda h: "peak" if 7 <= h < 23 else "off_peak")
+        
+        # Группируем по тарифам
+        cost_by_tariff = df.groupby('tariff')['cost'].sum()
+        consumption_by_tariff = df.groupby('tariff')['consumption'].sum()
+        
+        # Создаем графики
+        plt.figure(figsize=(12, 8))
+        
+        # Распределение стоимости по тарифам
+        plt.subplot(2, 2, 1)
+        cost_by_tariff.plot(kind='pie', autopct='%1.1f%%', colors=['lightcoral', 'lightgreen'])
+        plt.title('Распределение стоимости по тарифам')
+        plt.ylabel('')
+        
+        # Распределение потребления по тарифам
+        plt.subplot(2, 2, 2)
+        consumption_by_tariff.plot(kind='pie', autopct='%1.1f%%', colors=['lightcoral', 'lightgreen'])
+        plt.title('Распределение потребления по тарифам')
+        plt.ylabel('')
+        
+        # Сравнение стоимости и потребления
+        plt.subplot(2, 1, 2)
+        width = 0.35
+        x = np.arange(len(cost_by_tariff))
+        
+        plt.bar(x - width/2, consumption_by_tariff, width, label='Потребление (кВт*ч)', color='skyblue')
+        plt.bar(x + width/2, cost_by_tariff, width, label='Стоимость (руб)', color='salmon')
+        
+        plt.title('Сравнение потребления и стоимости')
+        plt.xlabel('Тарифный период')
+        plt.xticks(x, cost_by_tariff.index)
+        plt.legend()
+        plt.grid(axis='y', linestyle='--', alpha=0.7)
+        
+        plt.tight_layout()
+        plt.show()
