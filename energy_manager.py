@@ -81,3 +81,13 @@ class EnergyManager:
         self.weather_data.append(weather)
         self.save_data()
         return weather
+
+    def calculate_cost(self, consumption, timestamp):
+        """Расчет стоимости потребления с учетом тарифов"""
+        dt = timestamp if isinstance(timestamp, datetime) else datetime.fromisoformat(timestamp)
+        hour = dt.hour
+        
+        # Определяем тарифный период
+        tariff_type = "peak" if 7 <= hour < 23 else "off_peak"
+        return consumption * self.tariffs[tariff_type]
+    
