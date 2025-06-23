@@ -420,3 +420,59 @@ def generate_demo_data(manager):
         humidity = 50 + 20 * np.cos(i/7) + np.random.normal(0, 10)
         timestamp = datetime(date.year, date.month, date.day, 12)
         manager.add_weather_data(temp, humidity, timestamp)
+
+
+# Пример использования
+if __name__ == "__main__":
+    manager = EnergyManager()
+    
+    # Если данных нет, создаем демо-данные
+    if not manager.devices:
+        generate_demo_data(manager)
+    
+    # Дневная сводка
+    today = datetime.now().date()
+    daily = manager.get_daily_summary(today)
+    if daily:
+        print(f"\nСводка за {today}:")
+        print(f"Общее потребление: {daily['total_consumption']:.2f} кВт*ч")
+        print(f"Общая стоимость: {daily['total_cost']:.2f} руб")
+        
+        print("\nПотребление по устройствам:")
+        for device, consumption in daily["device_breakdown"].items():
+            print(f"- {device}: {consumption:.2f} кВт*ч")
+    
+    # Анализ шаблонов
+    patterns = manager.analyze_usage_patterns(30)
+    if patterns:
+        print("\nАнализ за 30 дней:")
+        print(f"Общее потребление: {patterns['total_consumption']:.2f} кВт*ч")
+        print(f"Общая стоимость: {patterns['total_cost']:.2f} руб")
+        
+        # Поиск самого энергозатратного устройства
+        top_device = max(patterns['device_consumption'].items(), key=lambda x: x[1]) if patterns['device_consumption'] else None
+        if top_device:
+            print(f"Самое энергозатратное устройство: {top_device[0]} ({top_device[1]:.2f} кВт*ч)")
+    
+    # Прогнозирование
+    forecast = manager.predict_consumption(7)
+    print("\nПрогноз потребления на неделю:")
+    for day in forecast:
+        print(f"{day['date']}: {day['predicted_consumption']:.2f} кВт*ч ({day['predicted_cost']:.2f} руб)")
+    
+    # Советы по экономии
+    tips = manager.get_energy_saving_tips()
+    print("\nСоветы по экономии энергии:")
+    for i, tip in enumerate(tips[:5], 1):
+        print(f"{i}. {tip}")
+    
+    # Визуализация
+    manager.plot_energy_usage()
+    manager.plot_cost_analysis()
+    
+    # Обнаружение аномалий
+    anomalies = manager.detect_anomalies()
+    if anomalies:
+        print("\nОбнаружены аномалии потребления:")
+        for anomaly in anomalies:
+            print(f"{anomaly['date']}: {anomaly['consumption']:.2f} кВт*ч (отклонение: {anomaly['deviation']:.2f}σ)")
