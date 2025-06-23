@@ -127,3 +127,74 @@ class EnergyManager:
             "device_breakdown": device_consumption,
             "category_breakdown": category_consumption
         }
+
+    def analyze_usage_patterns(self, days=30):
+        """Анализ шаблонов использования"""
+        end_date = datetime.now()
+        start_date = end_date - timedelta(days=days)
+        
+        # Фильтрация данных за период
+        period_data = [d for d in self.energy_data 
+                      if start_date <= datetime.fromisoformat(d["timestamp"]) <= end_date]
+        
+        if not period_data:
+            return {}
+        
+        # Создание DataFrame для анализа
+        df = pd.DataFrame(period_data)
+        df['timestamp'] = pd.to_datetime(df['timestamp'])
+        df['hour'] = df['timestamp'].dt.hour
+        df['day_of_week'] = df['timestamp'].dt.dayofweek
+        df['date'] = df['timestamp'].dt.date
+        
+        # Среднее потребление по часам
+        hourly_avg = df.groupby('hour')['consumption'].mean()
+        
+        # Потребление по дням недели
+        weekday_avg = df.groupby('day_of_week')['consumption'].mean()
+        
+        # Потребление по устройствам
+        device_consumption = {}
+        for device in self.devices:
+            device_data = df[df['device_id'] == device['id']]
+            if not device_data.empty:
+                device_consumption[device['name']] = device_data['consumption'].sum()
+        
+        return {
+            "hourly_avg": hourly_avg.to_dict(),
+            "weekday_avg": weekday_avg.to_dict(),
+            "device_consumption": device_consumption,
+            "total_consumption": df['consumption'].sum(),
+            "total_cost": df['cost'].sum()
+        }
+
+    def detect_anomalies(self, threshold=2.5):
+        """Обнаружение аномалий в потреблении"""
+        if not self.energy_data:
+            return []
+        
+        # Создаем временной ряд потребления
+        df = pd.DataFrame(self.energy_data)
+        df['timestamp'] = pd.to_datetime(df['timestamp'])
+        df = df.set_index('timestamp').sort_index()
+        
+        # Ресемплируем по дням
+        daily = df['consumption'].resample('D').sum()
+        
+        # Вычисляем статистики
+        mean = daily.mean()
+        std = daily.std()
+        
+        # Находим аномалии
+        anomalies = daily[(daily < mean - threshold * std) | (daily > mean + threshold * std)]
+        
+        # Форматируем результат
+        results = []
+        for date, value in anomalies.items():
+            results.append({
+                "date": date.date().isoformat(),
+                "consumption": value,
+                "deviation": (value - mean) / std
+            })
+        
+        return results
