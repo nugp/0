@@ -56,3 +56,16 @@ class EnergyManager:
         self.devices.append(device)
         self.save_data()
         return device
+
+    def add_energy_reading(self, device_id, consumption, timestamp=None):
+        """Добавление показания потребления"""
+        timestamp = timestamp or datetime.now()
+        reading = {
+            "device_id": device_id,
+            "consumption": consumption,  # кВт*ч
+            "timestamp": timestamp.isoformat(),
+            "cost": self.calculate_cost(consumption, timestamp)
+        }
+        self.energy_data.append(reading)
+        self.save_data()
+        return reading
