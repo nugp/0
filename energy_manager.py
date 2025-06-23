@@ -20,3 +20,23 @@ class EnergyManager:
         self.weather_data = []
         self.load_data()
     
+    def load_data(self):
+        """Загрузка данных из файла"""
+        if os.path.exists(self.data_file):
+            with open(self.data_file) as f:
+                data = json.load(f)
+                self.devices = data.get("devices", [])
+                self.energy_data = data.get("energy_data", [])
+                self.weather_data = data.get("weather_data", [])
+                self.tariffs = data.get("tariffs", self.tariffs)
+    
+    def save_data(self):
+        """Сохранение данных в файл"""
+        data = {
+            "devices": self.devices,
+            "energy_data": self.energy_data,
+            "weather_data": self.weather_data,
+            "tariffs": self.tariffs
+        }
+        with open(self.data_file, "w") as f:
+            json.dump(data, f, indent=2)
