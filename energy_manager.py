@@ -198,3 +198,57 @@ class EnergyManager:
             })
         
         return results
+
+    def predict_consumption(self, days=7):
+        """Прогнозирование потребления на будущее"""
+        if not self.energy_data:
+            return []
+        
+        # Создаем временной ряд
+        df = pd.DataFrame(self.energy_data)
+        df['timestamp'] = pd.to_datetime(df['timestamp'])
+        df = df.set_index('timestamp').sort_index()
+        
+        # Группируем по дням
+        daily = df['consumption'].resample('D').sum().reset_index()
+        daily['day_of_week'] = daily['timestamp'].dt.dayofweek
+        daily['day'] = daily['timestamp'].dt.day
+        daily['month'] = daily['timestamp'].dt.month
+        
+        # Подготовка данных для модели
+        X = daily[['day_of_week', 'day', 'month']]
+        y = daily['consumption']
+        
+        # Разделение данных
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, shuffle=False)
+        
+        # Обучение модели
+        model = RandomForestRegressor(n_estimators=100, random_state=42)
+        model.fit(X_train, y_train)
+        
+        # Оценка модели
+        y_pred = model.predict(X_test)
+        mae = mean_absolute_error(y_test, y_pred)
+        print(f"Точность прогноза: MAE = {mae:.3f} кВт*ч")
+        
+        # Прогноз на будущее
+        future_dates = [datetime.now() + timedelta(days=i) for i in range(1, days+1)]
+        future_data = pd.DataFrame({
+            'timestamp': future_dates,
+            'day_of_week': [d.weekday() for d in future_dates],
+            'day': [d.day for d in future_dates],
+            'month': [d.month for d in future_dates]
+        })
+        
+        predictions = model.predict(future_data[['day_of_week', 'day', 'month']])
+        
+        # Форматируем результат
+        forecast = []
+        for date, pred in zip(future_dates, predictions):
+            forecast.append({
+                "date": date.date().isoformat(),
+                "predicted_consumption": pred,
+                "predicted_cost": self.calculate_cost(pred, date)
+            })
+        
+        return forecast
