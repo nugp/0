@@ -277,3 +277,47 @@ class EnergyManager:
         tips.append("Выключайте устройства из розетки, когда они не используются")
         
         return tips or ["Ваше энергопотребление выглядит эффективным!"]
+
+    def plot_energy_usage(self, days=7):
+        """Визуализация энергопотребления"""
+        end_date = datetime.now()
+        start_date = end_date - timedelta(days=days)
+        
+        # Фильтрация данных
+        period_data = [d for d in self.energy_data 
+                      if start_date <= datetime.fromisoformat(d["timestamp"]) <= end_date]
+        
+        if not period_data:
+            print("Нет данных для визуализации")
+            return
+        
+        # Создаем DataFrame
+        df = pd.DataFrame(period_data)
+        df['timestamp'] = pd.to_datetime(df['timestamp'])
+        df = df.set_index('timestamp').sort_index()
+        
+        # Группируем по дням/часам
+        daily = df['consumption'].resample('D').sum()
+        hourly = df['consumption'].resample('H').sum()
+        
+        # Создаем графики
+        plt.figure(figsize=(15, 10))
+        
+        # Суточное потребление
+        plt.subplot(2, 1, 1)
+        daily.plot(kind='bar', color='skyblue')
+        plt.title('Суточное потребление энергии')
+        plt.xlabel('Дата')
+        plt.ylabel('кВт*ч')
+        plt.grid(axis='y', linestyle='--', alpha=0.7)
+        
+        # Почасовое потребление
+        plt.subplot(2, 1, 2)
+        hourly.plot(kind='line', marker='o', color='green')
+        plt.title('Почасовое потребление энергии')
+        plt.xlabel('Время')
+        plt.ylabel('кВт*ч')
+        plt.grid(True, linestyle='--', alpha=0.7)
+        
+        plt.tight_layout()
+        plt.show()
