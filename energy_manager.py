@@ -91,3 +91,39 @@ class EnergyManager:
         tariff_type = "peak" if 7 <= hour < 23 else "off_peak"
         return consumption * self.tariffs[tariff_type]
     
+    def get_daily_summary(self, date=None):
+        """Получение дневной сводки"""
+        date = date or datetime.now().date()
+        daily_data = [d for d in self.energy_data if datetime.fromisoformat(d["timestamp"]).date() == date]
+        
+        if not daily_data:
+            return None
+        
+        total_consumption = sum(d["consumption"] for d in daily_data)
+        total_cost = sum(d["cost"] for d in daily_data)
+        
+        # Группировка по устройствам
+        device_consumption = {}
+        for d in daily_data:
+            device_id = d["device_id"]
+            device_name = next((dev["name"] for dev in self.devices if dev["id"] == device_id), "Unknown")
+            if device_name not in device_consumption:
+                device_consumption[device_name] = 0
+            device_consumption[device_name] += d["consumption"]
+        
+        # Группировка по категориям
+        category_consumption = {}
+        for d in daily_data:
+            device_id = d["device_id"]
+            category = next((dev["category"] for dev in self.devices if dev["id"] == device_id), "other")
+            if category not in category_consumption:
+                category_consumption[category] = 0
+            category_consumption[category] += d["consumption"]
+        
+        return {
+            "date": date.isoformat(),
+            "total_consumption": total_consumption,
+            "total_cost": total_cost,
+            "device_breakdown": device_consumption,
+            "category_breakdown": category_consumption
+        }
