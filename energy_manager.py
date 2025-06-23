@@ -376,3 +376,47 @@ class EnergyManager:
         
         plt.tight_layout()
         plt.show()
+
+
+# Генератор демо-данных
+def generate_demo_data(manager):
+    """Создание демонстрационных данных"""
+    # Добавляем устройства
+    devices = [
+        manager.add_device("Холодильник", 150, "kitchen", "Кухня", {"start": "00:00", "end": "23:59"}),
+        manager.add_device("Кондиционер", 1500, "hvac", "Гостиная", {"start": "12:00", "end": "22:00"}),
+        manager.add_device("Стиральная машина", 2000, "laundry", "Ванная", {"start": "08:00", "end": "23:00"}),
+        manager.add_device("Телевизор", 120, "entertainment", "Гостиная", {"start": "18:00", "end": "23:00"}),
+        manager.add_device("Освещение", 300, "lighting", "Весь дом", {"start": "17:00", "end": "23:00"})
+    ]
+    
+    # Генерируем показания потребления
+    now = datetime.now()
+    for i in range(30):
+        date = now - timedelta(days=30-i)
+        for device in devices:
+            # Базовое потребление
+            base_consumption = device["power_rating"] / 1000 * np.random.uniform(0.5, 1.5)
+            
+            # Учитываем расписание
+            start_hour = int(device["schedule"]["start"].split(":")[0])
+            end_hour = int(device["schedule"]["end"].split(":")[0])
+            
+            for hour in range(24):
+                if start_hour <= hour <= end_hour:
+                    # Потребление в рабочее время
+                    consumption = base_consumption * np.random.uniform(0.8, 1.2)
+                else:
+                    # Потребление в нерабочее время (может быть не нулевым для некоторых устройств)
+                    consumption = base_consumption * np.random.uniform(0.1, 0.3)
+                
+                timestamp = datetime(date.year, date.month, date.day, hour)
+                manager.add_energy_reading(device["id"], consumption, timestamp)
+    
+    # Генерируем погодные данные
+    for i in range(30):
+        date = now - timedelta(days=30-i)
+        temp = 15 + 10 * np.sin(i/5) + np.random.normal(0, 3)
+        humidity = 50 + 20 * np.cos(i/7) + np.random.normal(0, 10)
+        timestamp = datetime(date.year, date.month, date.day, 12)
+        manager.add_weather_data(temp, humidity, timestamp)
