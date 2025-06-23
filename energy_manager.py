@@ -69,3 +69,15 @@ class EnergyManager:
         self.energy_data.append(reading)
         self.save_data()
         return reading
+
+    def add_weather_data(self, temperature, humidity, timestamp=None):
+        """Добавление погодных данных"""
+        timestamp = timestamp or datetime.now()
+        weather = {
+            "temperature": temperature,
+            "humidity": humidity,
+            "timestamp": timestamp.isoformat()
+        }
+        self.weather_data.append(weather)
+        self.save_data()
+        return weather
