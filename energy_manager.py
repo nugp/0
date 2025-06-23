@@ -252,3 +252,28 @@ class EnergyManager:
             })
         
         return forecast
+
+    def get_energy_saving_tips(self):
+        """Получение советов по экономии энергии"""
+        tips = []
+        patterns = self.analyze_usage_patterns(30)
+        
+        # Анализ пикового потребления
+        if "hourly_avg" in patterns:
+            peak_hours = [hour for hour, cons in patterns["hourly_avg"].items() if cons > 1.5 * np.mean(list(patterns["hourly_avg"].values()))]
+            if peak_hours:
+                tips.append(f"Снизьте потребление в пиковые часы: {', '.join(str(h) for h in sorted(peak_hours))}:00")
+        
+        # Анализ устройств с высоким потреблением
+        if "device_consumption" in patterns:
+            top_consumers = sorted(patterns["device_consumption"].items(), key=lambda x: x[1], reverse=True)[:3]
+            for device, consumption in top_consumers:
+                if consumption > 5:  # кВт*ч за месяц
+                    tips.append(f"Устройство '{device}' потребляет много энергии. Проверьте его настройки.")
+        
+        # Общие советы
+        tips.append("Используйте LED освещение вместо ламп накаливания")
+        tips.append("Установите программируемый термостат для отопления/охлаждения")
+        tips.append("Выключайте устройства из розетки, когда они не используются")
+        
+        return tips or ["Ваше энергопотребление выглядит эффективным!"]
