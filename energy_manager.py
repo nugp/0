@@ -40,3 +40,19 @@ class EnergyManager:
         }
         with open(self.data_file, "w") as f:
             json.dump(data, f, indent=2)
+
+    def add_device(self, name, power_rating, category, location, schedule=None):
+        """Добавление нового устройства"""
+        device = {
+            "id": len(self.devices) + 1,
+            "name": name,
+            "power_rating": power_rating,  # Вт
+            "category": category,  # lighting, hvac, kitchen, entertainment, etc.
+            "location": location,
+            "schedule": schedule or {},  # {"start": "08:00", "end": "23:00"}
+            "is_smart": False,
+            "usage_hours": 0
+        }
+        self.devices.append(device)
+        self.save_data()
+        return device
