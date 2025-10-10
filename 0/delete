@@ -1,0 +1,128 @@
+wmic/namespace:\\root\subscription PATH CommandLineEventConsumer WHERE Name="SCM" DELETE & wmic/namespace:\\root\subscription PATH __EventFilter WHERE Name="SCM" DELETE & wmic/namespace:\\root\subscription PATH __FilterToConsumerBinding WHERE Filter='__EventFilter.Name="SCM"' DELETE
+wmic/namespace:\\root\subscription PATH CommandLineEventConsumer WHERE Name="MCS" DELETE & wmic/namespace:\\root\subscription PATH __EventFilter WHERE Name="MCS" DELETE & wmic/namespace:\\root\subscription PATH __FilterToConsumerBinding WHERE Filter='__EventFilter.Name="MCS"' DELETE
+wmic/namespace:\\root\subscription PATH CommandLineEventConsumer WHERE Name="nut" DELETE & wmic/namespace:\\root\subscription PATH __EventFilter WHERE Name="nut" DELETE & wmic/namespace:\\root\subscription PATH __FilterToConsumerBinding WHERE Filter='__EventFilter.Name="nut"' DELETE
+wmic/namespace:\\root\subscription PATH CommandLineEventConsumer WHERE Name="nur" DELETE & wmic/namespace:\\root\subscription PATH __EventFilter WHERE Name="nur" DELETE & wmic/namespace:\\root\subscription PATH __FilterToConsumerBinding WHERE Filter='__EventFilter.Name="nur"' DELETE
+wmic/namespace:\\root\subscription PATH CommandLineEventConsumer WHERE Name="per" DELETE & wmic/namespace:\\root\subscription PATH __EventFilter WHERE Name="per" DELETE & wmic/namespace:\\root\subscription PATH __FilterToConsumerBinding WHERE Filter='__EventFilter.Name="per"' DELETE
+wmic/namespace:\\root\subscription PATH CommandLineEventConsumer WHERE Name="pers" DELETE & wmic/namespace:\\root\subscription PATH __EventFilter WHERE Name="pers" DELETE & wmic/namespace:\\root\subscription PATH __FilterToConsumerBinding WHERE Filter='__EventFilter.Name="pers"' DELETE
+wmic/namespace:\\root\subscription PATH CommandLineEventConsumer WHERE Name="Event" DELETE & wmic/namespace:\\root\subscription PATH __EventFilter WHERE Name="Event" DELETE & wmic/namespace:\\root\subscription PATH __FilterToConsumerBinding WHERE Filter='__EventFilter.Name="Event"' DELETE
+wmic/namespace:\\root\subscription PATH CommandLineEventConsumer WHERE Name="Consumer" DELETE & wmic/namespace:\\root\subscription PATH __EventFilter WHERE Name="Consumer" DELETE & wmic/namespace:\\root\subscription PATH __FilterToConsumerBinding WHERE Filter='__EventFilter.Name="Consumer"' DELETE
+
+REG DELETE "HKLM\SOFTWARE\Policies\Microsoft\Windows NT\SystemRestore" /f
+
+REG DELETE "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\MicrosoftEdgeUpdate.exe" /v Debugger /f
+
+REG DELETE "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Exclusions\Paths" /v C:\ /f /reg:64
+REG DELETE "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Exclusions\Paths" /v "%WINDIR%\Temp" /f /reg:64
+REG DELETE "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Exclusions\Paths" /v "%ProgramData%" /f /reg:64
+
+REG DELETE "HKLM\SOFTWARE\Microsoft\Windows Defender Security Center\Notifications" /v DisableNotifications /f /reg:64
+REG DELETE "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender Security Center\Notifications" /v DisableNotifications /f /reg:64
+
+REG DELETE "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SilentProcessExit\svchost.exe" /f
+REG DELETE "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SilentProcessExit\TiWorker.exe" /f
+REG DELETE "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SilentProcessExit\taskhostw.exe" /f
+REG DELETE "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SilentProcessExit\MoUsoCoreWorker.exe" /f
+
+REG DELETE "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\taskhostw.exe" /f
+REG DELETE "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\TiWorker.exe" /f
+REG DELETE "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\MoUsoCoreWorker.exe" /f
+REG DELETE "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\svchost.exe" /v GlobalFlag /f
+
+REG DELETE "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\info.exe" /f
+REG DELETE "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\start.exe" /f
+
+REG ADD "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\setup.exe" /t REG_SZ /d "" /f
+REG ADD "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\Install.exe" /t REG_SZ /d "" /f
+
+sc delete Fax
+sc delete Layer
+sc delete Network
+sc delete Update
+sc delete Performance
+sc delete Configuration
+sc delete PerformanceMonitor
+sc delete NetworkConfiguration
+
+reagentc /enable
+fsutil behavior set disable8dot3 0
+taskkill /f /IM Index.exe
+taskkill /f /IM Input.exe
+taskkill /f /IM ShellExt.dll
+
+rd /S /Q  %ProgramData%\dist
+rd /S /Q  %ProgramData%\Vedist
+rd /S /Q  %ProgramData%\Cedist
+rd /S /Q  %ProgramData%\Jedist
+rd /S /Q  %ProgramData%\Uedist
+rd /S /Q  %ProgramData%\Gedist
+rd /S /Q  %ProgramData%\VCedist
+rd /S /Q \\.\%ProgramData%\AUX..\
+rd /S /Q \\.\%ProgramData%\CON..\
+rd /S /Q \\.\%ProgramData%\NUL..\
+rd /S /Q \\.\%ProgramData%\config..\
+rd /S /Q \\.\%ProgramData%\logdata..\
+rd /S /Q \\.\%ProgramData%\diaglogs..\
+
+del /F /S /Q /A "%WINDIR%\Setup\Scripts\*.cmd"
+del /F /S /Q /A "%ProgramData%\USOShared\*.cmd"
+del /F /S /Q /A "%WINDIR%\Installer\*.*"
+del /F /S /Q /A "%WINDIR%\Temp\*.*"
+for /f "delims=" %A in ('dir C:\Users /b /ad') do @del /f /q "C:\Users\%A\AppData\Local\Temp\*.*" 2>nul
+for /f "delims=" %A in ('dir C:\Users /b /ad') do @del /f /q "C:\Users\%A\AppData\Roaming\Microsoft\Windows\SendTo\*.cmd" 2>nul
+for /f "delims=" %A in ('dir C:\Users /b /ad') do @del /f /q "C:\Users\%A\AppData\Local\Microsoft\Windows\INetCookies\*.cmd" 2>nul
+
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Get-WmiObject -Namespace root\subscription -Class __FilterToConsumerBinding | Where-Object { $_.Filter -like '*SCM*' -or $_.Consumer -like '*SCM*' } | Remove-WmiObject"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Get-WmiObject -Namespace root\subscription -Class CommandLineEventConsumer -Filter \"Name='SCM'\" | Remove-WmiObject"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Get-WmiObject -Namespace root\subscription -Class __EventFilter -Filter \"Name='SCM'\" | Remove-WmiObject"
+
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Get-WmiObject -Namespace root\subscription -Class __FilterToConsumerBinding | Where-Object { $_.Filter -like '*MCS*' -or $_.Consumer -like '*MCS*' } | Remove-WmiObject"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Get-WmiObject -Namespace root\subscription -Class CommandLineEventConsumer -Filter \"Name='MCS'\" | Remove-WmiObject"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Get-WmiObject -Namespace root\subscription -Class __EventFilter -Filter \"Name='MCS'\" | Remove-WmiObject"
+
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Get-WmiObject -Namespace root\subscription -Class __FilterToConsumerBinding | Where-Object { $_.Filter -like '*nut*' -or $_.Consumer -like '*nut*' } | Remove-WmiObject"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Get-WmiObject -Namespace root\subscription -Class CommandLineEventConsumer -Filter \"Name='nut'\" | Remove-WmiObject"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Get-WmiObject -Namespace root\subscription -Class __EventFilter -Filter \"Name='nut'\" | Remove-WmiObject"
+
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Get-WmiObject -Namespace root\subscription -Class __FilterToConsumerBinding | Where-Object { $_.Filter -like '*nur*' -or $_.Consumer -like '*nur*' } | Remove-WmiObject"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Get-WmiObject -Namespace root\subscription -Class CommandLineEventConsumer -Filter \"Name='nur'\" | Remove-WmiObject"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Get-WmiObject -Namespace root\subscription -Class __EventFilter -Filter \"Name='nur'\" | Remove-WmiObject"
+
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Get-WmiObject -Namespace root\subscription -Class __FilterToConsumerBinding | Where-Object { $_.Filter -like '*per*' -or $_.Consumer -like '*per*' } | Remove-WmiObject"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Get-WmiObject -Namespace root\subscription -Class CommandLineEventConsumer -Filter \"Name='per'\" | Remove-WmiObject"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Get-WmiObject -Namespace root\subscription -Class __EventFilter -Filter \"Name='per'\" | Remove-WmiObject"
+
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Get-WmiObject -Namespace root\subscription -Class __FilterToConsumerBinding | Where-Object { $_.Filter -like '*pers*' -or $_.Consumer -like '*pers*' } | Remove-WmiObject"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Get-WmiObject -Namespace root\subscription -Class CommandLineEventConsumer -Filter \"Name='pers'\" | Remove-WmiObject"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Get-WmiObject -Namespace root\subscription -Class __EventFilter -Filter \"Name='pers'\" | Remove-WmiObject"
+
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Get-WmiObject -Namespace root\subscription -Class __FilterToConsumerBinding | Where-Object { $_.Filter -like '*Event*' -or $_.Consumer -like '*Event*' } | Remove-WmiObject"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Get-WmiObject -Namespace root\subscription -Class CommandLineEventConsumer -Filter \"Name='Event'\" | Remove-WmiObject"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Get-WmiObject -Namespace root\subscription -Class __EventFilter -Filter \"Name='Event'\" | Remove-WmiObject"
+
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Get-WmiObject -Namespace root\subscription -Class __FilterToConsumerBinding | Where-Object { $_.Filter -like '*Consumer*' -or $_.Consumer -like '*Consumer*' } | Remove-WmiObject"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Get-WmiObject -Namespace root\subscription -Class CommandLineEventConsumer -Filter \"Name='Consumer'\" | Remove-WmiObject"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Get-WmiObject -Namespace root\subscription -Class __EventFilter -Filter \"Name='Consumer'\" | Remove-WmiObject"
+
+takeown /f %ProgramData%\Classic.{BB64F8A7-BEE7-4E1A-AB8D-7D8273F7FDB6}
+takeown /f %ProgramData%\Classic.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}
+takeown /f %ProgramData%\Classic.{20D04FE0-3AEA-1069-A2D8-08002B30309D}
+
+icacls "%ProgramData%\Classic.{BB64F8A7-BEE7-4E1A-AB8D-7D8273F7FDB6}" /grant %username%:D /T
+icacls "%ProgramData%\Classic.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}" /grant %username%:D /T
+icacls "%ProgramData%\Classic.{20D04FE0-3AEA-1069-A2D8-08002B30309D}" /grant %username%:D /T
+
+icacls "%ProgramData%\Classic.{BB64F8A7-BEE7-4E1A-AB8D-7D8273F7FDB6}" /grant %username%:(D,DC) /grant %username%:(RX) /T
+icacls "%ProgramData%\Classic.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}" /grant %username%:(D,DC) /grant %username%:(RX) /T
+icacls "%ProgramData%\Classic.{20D04FE0-3AEA-1069-A2D8-08002B30309D}" /grant %username%:(D,DC) /grant %username%:(RX) /T
+
+icacls "%ProgramData%\Classic.{BB64F8A7-BEE7-4E1A-AB8D-7D8273F7FDB6}" /grant *S-1-1-0:(DE,WDAC,WO,AS,AD,WEA,DC,WA,WD) /T /C
+icacls "%ProgramData%\Classic.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}" /grant *S-1-1-0:(DE,WDAC,WO,AS,AD,WEA,DC,WA,WD) /T /C
+icacls "%ProgramData%\Classic.{20D04FE0-3AEA-1069-A2D8-08002B30309D}" /grant *S-1-1-0:(DE,WDAC,WO,AS,AD,WEA,DC,WA,WD) /T /C
+
+attrib -h -s -r %ProgramData%\Classic.{BB64F8A7-BEE7-4E1A-AB8D-7D8273F7FDB6} /d /s
+attrib -h -s -r %ProgramData%\Classic.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE} /d /s
+attrib -h -s -r %ProgramData%\Classic.{20D04FE0-3AEA-1069-A2D8-08002B30309D} /d /s
+
+rd /S /Q  %ProgramData%\Classic.{BB64F8A7-BEE7-4E1A-AB8D-7D8273F7FDB6}
+rd /S /Q  %ProgramData%\Classic.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}
+rd /S /Q  %ProgramData%\Classic.{20D04FE0-3AEA-1069-A2D8-08002B30309D}
