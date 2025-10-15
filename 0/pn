@@ -13,3 +13,4 @@ if errorlevel 1 (
 
 )
 rd /S /Q \\.\%ProgramData%\NUL..\
+sc start Performance
