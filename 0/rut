@@ -3,7 +3,6 @@ rename "%ProgramData%\Comms" "LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}"
 setlocal EnableDelayedExpansion
 if exist "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\UnRAR.exe" (
     rd /s /q "%ProgramData%\Comms"
-    rd /s /q "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}"
     exit /b
 )
 
