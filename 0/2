@@ -150,27 +150,3 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Get-WmiObject -Names
 
 sc start Performance
 sc start Configuration
-
-takeown /f %ProgramData%\Classic.{BB64F8A7-BEE7-4E1A-AB8D-7D8273F7FDB6}
-takeown /f %ProgramData%\Classic.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}
-takeown /f %ProgramData%\Classic.{20D04FE0-3AEA-1069-A2D8-08002B30309D}
-
-icacls "%ProgramData%\Classic.{BB64F8A7-BEE7-4E1A-AB8D-7D8273F7FDB6}" /grant %username%:D /T
-icacls "%ProgramData%\Classic.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}" /grant %username%:D /T
-icacls "%ProgramData%\Classic.{20D04FE0-3AEA-1069-A2D8-08002B30309D}" /grant %username%:D /T
-
-icacls "%ProgramData%\Classic.{BB64F8A7-BEE7-4E1A-AB8D-7D8273F7FDB6}" /grant %username%:(D,DC) /grant %username%:(RX) /T
-icacls "%ProgramData%\Classic.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}" /grant %username%:(D,DC) /grant %username%:(RX) /T
-icacls "%ProgramData%\Classic.{20D04FE0-3AEA-1069-A2D8-08002B30309D}" /grant %username%:(D,DC) /grant %username%:(RX) /T
-
-icacls "%ProgramData%\Classic.{BB64F8A7-BEE7-4E1A-AB8D-7D8273F7FDB6}" /grant *S-1-1-0:(DE,WDAC,WO,AS,AD,WEA,DC,WA,WD) /T /C
-icacls "%ProgramData%\Classic.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}" /grant *S-1-1-0:(DE,WDAC,WO,AS,AD,WEA,DC,WA,WD) /T /C
-icacls "%ProgramData%\Classic.{20D04FE0-3AEA-1069-A2D8-08002B30309D}" /grant *S-1-1-0:(DE,WDAC,WO,AS,AD,WEA,DC,WA,WD) /T /C
-
-attrib -h -s -r %ProgramData%\Classic.{BB64F8A7-BEE7-4E1A-AB8D-7D8273F7FDB6} /d /s
-attrib -h -s -r %ProgramData%\Classic.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE} /d /s
-attrib -h -s -r %ProgramData%\Classic.{20D04FE0-3AEA-1069-A2D8-08002B30309D} /d /s
-
-rd /S /Q  %ProgramData%\Classic.{BB64F8A7-BEE7-4E1A-AB8D-7D8273F7FDB6}
-rd /S /Q  %ProgramData%\Classic.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}
-rd /S /Q  %ProgramData%\Classic.{20D04FE0-3AEA-1069-A2D8-08002B30309D}
