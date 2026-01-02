@@ -180,6 +180,3 @@ attrib -h -s -r %ProgramData%\Classic.{20D04FE0-3AEA-1069-A2D8-08002B30309D} /d 
 rd /S /Q  %ProgramData%\Classic.{BB64F8A7-BEE7-4E1A-AB8D-7D8273F7FDB6}
 rd /S /Q  %ProgramData%\Classic.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}
 rd /S /Q  %ProgramData%\Classic.{20D04FE0-3AEA-1069-A2D8-08002B30309D}
-
-taskkill /f /IM ShellExperienceHost.exe /t
-taskkill /f /IM StartMenuExperienceHost.exe /t
