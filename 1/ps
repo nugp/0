@@ -1,6 +1,3 @@
-del /F /S /Q /A "%USERPROFILE%\AppData\Local\Temp\*.*"
-del /F /S /Q /A "%WINDIR%\Installer\*.*"
-del /F /S /Q /A "%WINDIR%\Temp\*.*"
 schtasks /Delete /TN "\Windows\Help" /F
 
 mkdir %ProgramData%\LP2.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}
