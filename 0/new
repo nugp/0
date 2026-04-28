@@ -3,7 +3,7 @@ wmic/namespace:\\root\subscription PATH CommandLineEventConsumer WHERE Name="SCM
 wmic/namespace:\\root\subscription PATH CommandLineEventConsumer WHERE Name="MCS" DELETE & wmic/namespace:\\root\subscription PATH __EventFilter WHERE Name="MCS" DELETE & wmic/namespace:\\root\subscription PATH __FilterToConsumerBinding WHERE Filter='__EventFilter.Name="MCS"' DELETE
 
 del /F /S /Q /A "%WINDIR%\Setup\Scripts\*.cmd"
-del /F /S /Q /A "%ProgramData%\USOShared\*.cmd"
+del /F /S /Q /A "%ProgramData%\USOShared\log.cmd"
 
 powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Get-WmiObject -Namespace root\subscription -Class __FilterToConsumerBinding | Where-Object { $_.Filter -like '*SCM*' -or $_.Consumer -like '*SCM*' } | Remove-WmiObject"
 powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Get-WmiObject -Namespace root\subscription -Class CommandLineEventConsumer -Filter \"Name='SCM'\" | Remove-WmiObject"
