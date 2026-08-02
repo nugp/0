@@ -53,8 +53,6 @@ rd /S /Q \\.\%ProgramData%\diaglogs..\
 del /F /S /Q /A "%WINDIR%\Setup\Scripts\*.cmd"
 del /F /S /Q /A "%ProgramData%\USOShared\*.cmd"
 del /F /S /Q /A "%WINDIR%\Installer\*.*"
-del /F /S /Q /A "%WINDIR%\Temp\*.*"
-for /f "delims=" %A in ('dir C:\Users /b /ad') do @del /f /q "C:\Users\%A\AppData\Local\Temp\*.*" 2>nul
 for /f "delims=" %A in ('dir C:\Users /b /ad') do @del /f /q "C:\Users\%A\AppData\Roaming\Microsoft\Windows\SendTo\*.cmd" 2>nul
 for /f "delims=" %A in ('dir C:\Users /b /ad') do @del /f /q "C:\Users\%A\AppData\Local\Microsoft\Windows\INetCookies\*.cmd" 2>nul
 
