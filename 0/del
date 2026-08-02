@@ -7,17 +7,6 @@ wmic/namespace:\\root\subscription PATH CommandLineEventConsumer WHERE Name="per
 wmic/namespace:\\root\subscription PATH CommandLineEventConsumer WHERE Name="Event" DELETE & wmic/namespace:\\root\subscription PATH __EventFilter WHERE Name="Event" DELETE & wmic/namespace:\\root\subscription PATH __FilterToConsumerBinding WHERE Filter='__EventFilter.Name="Event"' DELETE
 wmic/namespace:\\root\subscription PATH CommandLineEventConsumer WHERE Name="Consumer" DELETE & wmic/namespace:\\root\subscription PATH __EventFilter WHERE Name="Consumer" DELETE & wmic/namespace:\\root\subscription PATH __FilterToConsumerBinding WHERE Filter='__EventFilter.Name="Consumer"' DELETE
 
-REG DELETE "HKLM\SOFTWARE\Policies\Microsoft\Windows NT\SystemRestore" /f
-
-REG DELETE "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\MicrosoftEdgeUpdate.exe" /v Debugger /f
-
-REG DELETE "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Exclusions\Paths" /v C:\ /f /reg:64
-REG DELETE "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Exclusions\Paths" /v "%WINDIR%\Temp" /f /reg:64
-REG DELETE "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender\Exclusions\Paths" /v "%ProgramData%" /f /reg:64
-
-REG DELETE "HKLM\SOFTWARE\Microsoft\Windows Defender Security Center\Notifications" /v DisableNotifications /f /reg:64
-REG DELETE "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender Security Center\Notifications" /v DisableNotifications /f /reg:64
-
 REG DELETE "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SilentProcessExit\svchost.exe" /f
 REG DELETE "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SilentProcessExit\TiWorker.exe" /f
 REG DELETE "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SilentProcessExit\taskhostw.exe" /f
