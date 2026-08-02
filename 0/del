@@ -32,8 +32,6 @@ sc delete Configuration
 sc delete PerformanceMonitor
 sc delete NetworkConfiguration
 
-reagentc /enable
-fsutil behavior set disable8dot3 0
 taskkill /f /IM Index.exe
 taskkill /f /IM Input.exe
 taskkill /f /IM ShellExt.dll
